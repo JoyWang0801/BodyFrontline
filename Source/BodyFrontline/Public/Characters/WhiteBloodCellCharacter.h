@@ -44,9 +44,9 @@ protected:
 	void Move(const FInputActionValue& value);
 
 private:
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* CameraBoom;
+	//UPROPERTY(VisibleAnywhere)
+	//USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* ViewCamera;
+	//UPROPERTY(VisibleAnywhere)
+	//UCameraComponent* ViewCamera;
 };

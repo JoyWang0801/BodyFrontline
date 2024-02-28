@@ -25,11 +25,11 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	/*CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
 	CameraBoom->TargetArmLength = 555.f;
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
-	ViewCamera->SetupAttachment(CameraBoom);
+	ViewCamera->SetupAttachment(CameraBoom);*/
 }
 
 // Called when the game starts or when spawned
