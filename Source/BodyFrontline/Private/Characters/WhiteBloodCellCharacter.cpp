@@ -50,13 +50,27 @@ void AWhiteBloodCellCharacter::BeginPlay()
 
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 {
-	const float DirectionValue = value.Get<float>();
-	if (Controller && (DirectionValue != 0.f)) 
+	const FVector2D MovementVector = value.Get<FVector2D>();
+	if (GetController())
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("triggered"));
-		FVector Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirectionValue);
+		const FRotator ControlRotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0.f, ControlRotation.Yaw, 0.f);
+
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); // Left handed rule, x facing forward
+		AddMovementInput(ForwardDirection, MovementVector.Y);
+
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y); // left handed rule, y facing right
+		AddMovementInput(RightDirection, MovementVector.X);
 	}
+
+	//const float DirectionValue = value.Get<float>();
+	//if (Controller && (DirectionValue != 0.f)) 
+	//{
+	//	// UE_LOG(LogTemp, Warning, TEXT("triggered"));
+	//	// FVector Forward = GetActorForwardVector();
+	//	FVector Forward = GetActorRightVector();
+	//	AddMovementInput(Forward, DirectionValue);
+	//}
 }
 
 // Called every frame
@@ -75,7 +89,12 @@ void AWhiteBloodCellCharacter::SetupPlayerInputComponent(UInputComponent* Player
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::Move);
 	}
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 
-	PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	}
+
+	// PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ACharacter::Jump);
 }
 
