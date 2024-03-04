@@ -2,6 +2,7 @@
 
 
 #include "Characters/WhiteBloodCellCharacter.h"
+#include "Characters/PlayerCamera.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -9,6 +10,8 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Characters/CombatComponent.h"
+#include "Weapon/Weapon.h"
 
 // Sets default values
 AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
@@ -25,11 +28,7 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	/*CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(GetRootComponent());
-	CameraBoom->TargetArmLength = 555.f;
-	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
-	ViewCamera->SetupAttachment(CameraBoom);*/
+	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +45,16 @@ void AWhiteBloodCellCharacter::BeginPlay()
 			Subsystem->AddMappingContext(WhiteBloodCellMappingContext, 0);
 		}
 	}
+
+	//if (CameraClass) 
+	//{
+	//
+	//	FVector SpawnLocation = GetActorLocation();
+	//	FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
+	//	FActorSpawnParameters SpawnParameters;
+	//	// APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass, SpawnLocation, SpawnRotation, SpawnParameters);
+	//	APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass);
+	//}
 }
 
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
@@ -73,6 +82,26 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 	//}
 }
 
+void AWhiteBloodCellCharacter::EPressed()
+{
+	if (Combat) 
+	{
+		Combat->EquipWeapon(OverlappingWeapon);
+	}
+}
+
+void AWhiteBloodCellCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
+{
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->ShowPickupWidget(true);
+	}
+	if (LastWeapon)
+	{
+		LastWeapon->ShowPickupWidget(false);
+	}
+}
+
 // Called every frame
 void AWhiteBloodCellCharacter::Tick(float DeltaTime)
 {
@@ -92,9 +121,38 @@ void AWhiteBloodCellCharacter::SetupPlayerInputComponent(UInputComponent* Player
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-
 	}
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::EPressed);
+	}
+}
 
-	// PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ACharacter::Jump);
+void AWhiteBloodCellCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	if (Combat) 
+	{
+		Combat->Character = this;
+	}
+}
+
+void AWhiteBloodCellCharacter::SetOverlappingWeapon(AWeapon* Weapon)
+{
+	//if (OverlappingWeapon)
+	//{
+	//	OverlappingWeapon->ShowPickupWidget(false);
+	//}
+	OverlappingWeapon = Weapon;
+	UE_LOG(LogTemp, Warning, TEXT("Is Overlapping"));
+
+	//if (IsLocallyControlled())
+	//{
+	//	if (OverlappingWeapon)
+	//	{
+	//		OverlappingWeapon->ShowPickupWidget(true);
+	//	}
+	//}
 }
 

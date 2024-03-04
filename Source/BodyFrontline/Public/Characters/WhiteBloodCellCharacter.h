@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class APlayerCamera;
 
 UCLASS()
 class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter
@@ -21,12 +22,13 @@ class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AWhiteBloodCellCharacter();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void PostInitializeComponents() override;
+	void SetOverlappingWeapon(AWeapon* Weapon);
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,7 +43,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* EquipAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<APlayerCamera> CameraClass;
+
 	void Move(const FInputActionValue& value);
+	void EPressed();
+
+
+	class AWeapon* OverlappingWeapon;
+
+	UFUNCTION()
+	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
 private:
 	//UPROPERTY(VisibleAnywhere)
@@ -49,4 +64,7 @@ private:
 
 	//UPROPERTY(VisibleAnywhere)
 	//UCameraComponent* ViewCamera;
+
+	UPROPERTY(VisibleAnywhere)
+	class UCombatComponent* Combat;
 };
