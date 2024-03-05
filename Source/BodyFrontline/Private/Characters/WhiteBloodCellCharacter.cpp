@@ -49,8 +49,6 @@ void AWhiteBloodCellCharacter::BeginPlay()
 		}
 
 		PlayerController->bShowMouseCursor = true;
-		PlayerController->bEnableClickEvents = true;
-		PlayerController->bEnableMouseOverEvents = true;
 	}
 
 	//if (CameraClass) 
