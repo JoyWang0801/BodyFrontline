@@ -80,11 +80,35 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 
 void AWhiteBloodCellCharacter::EPressed()
 {
+	UE_LOG(LogTemp, Warning, TEXT("EPressed"));
 	if (Combat) 
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}
 }
+
+void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
+{
+	const bool actionValue = value.Get<bool>();
+	if (actionValue == 1) 
+	{
+		if (Combat) 
+		{
+			Combat->FireButtonPressed(true);
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Pressed"));
+	}
+	else  
+	{
+		if (Combat)
+		{
+			Combat->FireButtonPressed(false);
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Released"));
+	}
+
+}
+
 
 void AWhiteBloodCellCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 {
@@ -115,6 +139,7 @@ void AWhiteBloodCellCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::Move);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::EPressed);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::FireButton);
 	}
 }
 

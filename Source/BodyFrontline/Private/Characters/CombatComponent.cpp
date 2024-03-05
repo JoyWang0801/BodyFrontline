@@ -23,6 +23,11 @@ void UCombatComponent::BeginPlay()
 	Super::BeginPlay();	
 }
 
+void UCombatComponent::FireButtonPressed(bool bIsPressed)
+{
+	bFireButtonPressed = bIsPressed;
+}
+
 
 // Called every frame
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

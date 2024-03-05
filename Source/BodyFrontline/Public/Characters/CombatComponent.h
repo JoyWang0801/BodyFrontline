@@ -21,13 +21,16 @@ public:
 
 	friend class AWhiteBloodCellCharacter;
 	void EquipWeapon(AWeapon* WeaponToEquip);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	void FireButtonPressed(bool bIsPressed);
 
 private:	
 	class AWhiteBloodCellCharacter* Character;
 	AWeapon* EquippedWeapon;
-
+	
+	bool bFireButtonPressed;
 		
 };
