@@ -29,6 +29,9 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+
+
+
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +47,10 @@ void AWhiteBloodCellCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(WhiteBloodCellMappingContext, 0);
 		}
+
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->bEnableClickEvents = true;
+		PlayerController->bEnableMouseOverEvents = true;
 	}
 
 	//if (CameraClass) 
@@ -71,15 +78,6 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y); // left handed rule, y facing right
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
-
-	//const float DirectionValue = value.Get<float>();
-	//if (Controller && (DirectionValue != 0.f)) 
-	//{
-	//	// UE_LOG(LogTemp, Warning, TEXT("triggered"));
-	//	// FVector Forward = GetActorForwardVector();
-	//	FVector Forward = GetActorRightVector();
-	//	AddMovementInput(Forward, DirectionValue);
-	//}
 }
 
 void AWhiteBloodCellCharacter::EPressed()
@@ -117,13 +115,7 @@ void AWhiteBloodCellCharacter::SetupPlayerInputComponent(UInputComponent* Player
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::Move);
-	}
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	}
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::EPressed);
 	}
 }

@@ -32,7 +32,6 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
-	UE_LOG(LogTemp, Warning, TEXT("EquipWeapon"));
 
 	if (Character == nullptr || WeaponToEquip == nullptr) return;
 	UE_LOG(LogTemp, Warning, TEXT("In EquipWeapon"));
