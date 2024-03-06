@@ -27,6 +27,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void ShowPickupWidget(bool bShowWidget);
+	void Fire();
 	FORCEINLINE void SetWeaponState(EWeaponState state) { WeaponState = state; }
 
 protected:
@@ -48,4 +49,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	class UWidgetComponent* PickupWidget;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	class UAnimationAsset* FireAnimation;
 };

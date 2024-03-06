@@ -32,6 +32,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 	void SetOverlappingWeapon(AWeapon* Weapon);
+	void PlayFireMontage();
 
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
@@ -79,4 +80,7 @@ private:
 
 	const APlayerCameraManager* PlayerCameraManager;
 	APlayerController* PlayerController;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class UAnimMontage* FireWeaponMontage;
 };

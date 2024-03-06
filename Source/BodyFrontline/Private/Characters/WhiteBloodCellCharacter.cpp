@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Math/UnrealMathUtility.h"
+#include "Characters/WBCAnimInstance.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -156,8 +157,6 @@ void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
 
 			FVector dis = Intersection - OutHit.TraceStart;
 			AO_Pitch = dis.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
-			UE_LOG(LogTemp, Warning, TEXT("%f"), dis.X);
-
 
 			// DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
 			// DrawDebugSolidPlane(GetWorld(), );
@@ -193,5 +192,16 @@ void AWhiteBloodCellCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	OverlappingWeapon = Weapon;
 	UE_LOG(LogTemp, Warning, TEXT("Is Overlapping"));
+}
+
+void AWhiteBloodCellCharacter::PlayFireMontage()
+{
+	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && FireWeaponMontage) 
+	{
+		AnimInstance->Montage_Play(FireWeaponMontage);
+	}
 }
 
