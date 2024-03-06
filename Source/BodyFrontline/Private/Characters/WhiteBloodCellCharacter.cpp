@@ -6,12 +6,18 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Characters/CombatComponent.h"
 #include "Weapon/Weapon.h"
+#include "Kismet/GameplayStatics.h"
+#include "Camera/PlayerCameraManager.h"
+#include "Math/UnrealMathUtility.h"
+
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
@@ -29,9 +35,6 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
-
-
-
 }
 
 // Called when the game starts or when spawned
@@ -39,7 +42,7 @@ void AWhiteBloodCellCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	PlayerController = Cast<APlayerController>(GetController());
 	if (PlayerController) 
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -50,6 +53,9 @@ void AWhiteBloodCellCharacter::BeginPlay()
 
 		PlayerController->bShowMouseCursor = true;
 	}
+
+	PlayerCameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+
 
 	//if (CameraClass) 
 	//{
@@ -127,6 +133,31 @@ void AWhiteBloodCellCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GetCursorPositionInThreeD();
+}
+
+void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
+{
+	if (PlayerCameraManager && PlayerController)
+	{
+		FVector WorldLocation;
+		FVector WorldDirection;
+		const FVector CameraLocation = PlayerCameraManager->GetCameraLocation();
+
+		if (PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
+		{
+			FVector LineEnd = WorldDirection * 1000.f + WorldLocation;
+			FVector Intersection = FMath::LinePlaneIntersection(CameraLocation, LineEnd, GetActorLocation(), FVector(0.f, 1.f, 0.f));
+			UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), Intersection.X, Intersection.Y, Intersection.Z);
+
+			FHitResult OutHit;
+			FVector Head = GetMesh()->GetSocketLocation("Head");
+			GetWorld()->LineTraceSingleByChannel(OutHit, Head, Intersection, ECollisionChannel::ECC_Visibility);
+
+			DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
+			//DrawDebugSolidPlane(GetWorld(), );
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -155,19 +186,7 @@ void AWhiteBloodCellCharacter::PostInitializeComponents()
 
 void AWhiteBloodCellCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
-	//if (OverlappingWeapon)
-	//{
-	//	OverlappingWeapon->ShowPickupWidget(false);
-	//}
 	OverlappingWeapon = Weapon;
 	UE_LOG(LogTemp, Warning, TEXT("Is Overlapping"));
-
-	//if (IsLocallyControlled())
-	//{
-	//	if (OverlappingWeapon)
-	//	{
-	//		OverlappingWeapon->ShowPickupWidget(true);
-	//	}
-	//}
 }
 

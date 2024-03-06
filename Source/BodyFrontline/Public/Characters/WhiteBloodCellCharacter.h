@@ -12,7 +12,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
-class APlayerCamera;
+class APlayerCamera; 
+class  APlayerCameraManager;
 
 UCLASS()
 class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter
@@ -67,4 +68,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
+
+	const APlayerCameraManager* PlayerCameraManager;
+	APlayerController* PlayerController;
 };
