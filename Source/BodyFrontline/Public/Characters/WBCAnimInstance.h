@@ -32,4 +32,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFiring;
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	float AO_Pitch;
 };

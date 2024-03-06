@@ -22,6 +22,11 @@ void UWBCAnimInstance::NativeUpdateAnimation(float DeltaTime)
 {
 	Super::NativeUpdateAnimation(DeltaTime);
 
+	WBCCharacter = Cast<AWhiteBloodCellCharacter>(TryGetPawnOwner());
+	if (WBCCharacter)
+	{
+		AO_Pitch = WBCCharacter->GetAO_Pitch();
+	}
 	if (WBCCharacterMovement) 
 	{
 		GroundSpeed = UKismetMathLibrary::VSizeXY(WBCCharacterMovement->Velocity);

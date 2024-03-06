@@ -26,10 +26,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void GetCursorPositionInThreeD();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 	void SetOverlappingWeapon(AWeapon* Weapon);
+
+	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,14 +54,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<APlayerCamera> CameraClass;
 
+	UFUNCTION()
+	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+
 	void Move(const FInputActionValue& value);
 	void EPressed();
 	void FireButton(const FInputActionValue& value);
 
 	class AWeapon* OverlappingWeapon;
 
-	UFUNCTION()
-	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
+	float AO_Pitch;
+
+	
 
 private:
 	//UPROPERTY(VisibleAnywhere)

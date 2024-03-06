@@ -115,7 +115,6 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 
 }
 
-
 void AWhiteBloodCellCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 {
 	if (OverlappingWeapon)
@@ -148,14 +147,20 @@ void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
 		{
 			FVector LineEnd = WorldDirection * 1000.f + WorldLocation;
 			FVector Intersection = FMath::LinePlaneIntersection(CameraLocation, LineEnd, GetActorLocation(), FVector(0.f, 1.f, 0.f));
-			UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), Intersection.X, Intersection.Y, Intersection.Z);
+			// UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), Intersection.X, Intersection.Y, Intersection.Z);
 
 			FHitResult OutHit;
 			FVector Head = GetMesh()->GetSocketLocation("Head");
-			GetWorld()->LineTraceSingleByChannel(OutHit, Head, Intersection, ECollisionChannel::ECC_Visibility);
+			// There is also a LineTraceMultiBychannel func
+			GetWorld()->LineTraceSingleByChannel(OutHit, Head, Intersection, ECollisionChannel::ECC_Visibility); 
 
-			DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
-			//DrawDebugSolidPlane(GetWorld(), );
+			FVector dis = Intersection - OutHit.TraceStart;
+			AO_Pitch = dis.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
+			UE_LOG(LogTemp, Warning, TEXT("%f"), dis.X);
+
+
+			// DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
+			// DrawDebugSolidPlane(GetWorld(), );
 		}
 	}
 }
