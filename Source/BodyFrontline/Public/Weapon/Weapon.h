@@ -27,8 +27,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void ShowPickupWidget(bool bShowWidget);
-	void Fire();
+	virtual void Fire(const FVector& HitTarget);
 	FORCEINLINE void SetWeaponState(EWeaponState state) { WeaponState = state; }
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
+
 
 protected:
 	// Called when the game starts or when spawned

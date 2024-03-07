@@ -96,6 +96,7 @@ void AWhiteBloodCellCharacter::EPressed()
 
 void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 {
+	// 1 = click LMB, 0 = release LMB
 	const bool actionValue = value.Get<bool>();
 	if (actionValue == 1) 
 	{
@@ -103,7 +104,6 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 		{
 			Combat->FireButtonPressed(true);
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Pressed"));
 	}
 	else  
 	{
@@ -111,7 +111,6 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 		{
 			Combat->FireButtonPressed(false);
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Released"));
 	}
 
 }
@@ -146,18 +145,27 @@ void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
 
 		if (PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
 		{
+			// get intersection point
 			FVector LineEnd = WorldDirection * 1000.f + WorldLocation;
 			FVector Intersection = FMath::LinePlaneIntersection(CameraLocation, LineEnd, GetActorLocation(), FVector(0.f, 1.f, 0.f));
-			// UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), Intersection.X, Intersection.Y, Intersection.Z);
 
 			FHitResult OutHit;
 			FVector Head = GetMesh()->GetSocketLocation("Head");
-			// There is also a LineTraceMultiBychannel func
-			GetWorld()->LineTraceSingleByChannel(OutHit, Head, Intersection, ECollisionChannel::ECC_Visibility); 
 
-			FVector dis = Intersection - OutHit.TraceStart;
-			AO_Pitch = dis.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
+			// Trace a line from character's head to the cursor
+			GetWorld()->LineTraceSingleByChannel(OutHit, Head, Intersection, ECollisionChannel::ECC_Visibility);
+			FVector Distance = Intersection - Head;
 
+			float GroundVelocity = GetCharacterMovement()->Velocity.X;
+			
+			
+			// UE_LOG(LogTemp, Warning, TEXT("Distance.X: %f."), GetActorForwardVector().X); // TODO - handle intersection is not on the same direction
+			AO_Pitch = Distance.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
+			if (Combat)
+			{
+				Combat->AimingTargetPosition = Intersection;
+				Combat->isInEyeSight = (GetActorForwardVector().X > 0 && Distance.X> 0) || (GetActorForwardVector().X < 0 && Distance.X < 0);
+			}
 			// DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
 			// DrawDebugSolidPlane(GetWorld(), );
 		}

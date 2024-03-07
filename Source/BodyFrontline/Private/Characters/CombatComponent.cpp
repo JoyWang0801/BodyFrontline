@@ -5,13 +5,14 @@
 #include "Weapon/Weapon.h"
 #include "Characters/WhiteBloodCellCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
@@ -28,10 +29,30 @@ void UCombatComponent::FireButtonPressed(bool bIsPressed)
 	bFireButtonPressed = bIsPressed;
 
 	if (EquippedWeapon == nullptr) return;
-	if (Character && bIsPressed)
+	if (Character && bIsPressed && isInEyeSight)
 	{
 		Character->PlayFireMontage();
-		EquippedWeapon->Fire();
+		EquippedWeapon->Fire(HitTarget);
+	}
+}
+
+void UCombatComponent::TraceToCrosshairs(FHitResult& TraceHitResult)
+{
+	FVector Head = Character->GetMesh()->GetSocketLocation("Head");
+	GetWorld()->LineTraceSingleByChannel(
+		TraceHitResult,
+		Head,
+		AimingTargetPosition,
+		ECollisionChannel::ECC_Visibility
+	);
+	if (!TraceHitResult.bBlockingHit) 
+	{
+		TraceHitResult.ImpactPoint = AimingTargetPosition;
+		HitTarget = AimingTargetPosition;
+	}
+	else 
+	{
+		HitTarget = TraceHitResult.ImpactPoint;
 	}
 }
 
@@ -40,6 +61,9 @@ void UCombatComponent::FireButtonPressed(bool bIsPressed)
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	FHitResult HitResult;
+	TraceToCrosshairs(HitResult);
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
