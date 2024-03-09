@@ -42,6 +42,7 @@ void AProjectile::BeginPlay()
 	CollisionBox->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
+
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (ImpactParticles) 
@@ -53,6 +54,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 	}
+	Destroy();
 }
 
 // Called every frame
