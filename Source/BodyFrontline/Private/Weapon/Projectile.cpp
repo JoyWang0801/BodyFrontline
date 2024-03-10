@@ -8,6 +8,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundCue.h"
+#include "Enemy/Enemy.h"
 
 
 // Sets default values
@@ -49,11 +50,25 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
 	}
-
 	if (ImpactSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 	}
+
+	if (Hit.GetActor()) 
+	{
+		if (Cast<AEnemy>(Hit.GetActor())) 
+		{
+			UGameplayStatics::ApplyDamage(
+				Hit.GetActor(),
+				Damage,
+				GetInstigator()->GetController(),
+				this,
+				UDamageType::StaticClass()
+			);
+		}
+	}
+
 	Destroy();
 }
 

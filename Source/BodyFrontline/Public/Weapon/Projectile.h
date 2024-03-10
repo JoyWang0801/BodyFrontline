@@ -41,4 +41,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class USoundCue* ImpactSound;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	float Damage = 20.f;
 };

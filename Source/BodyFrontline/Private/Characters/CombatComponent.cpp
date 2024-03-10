@@ -82,5 +82,6 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	}
 	EquippedWeapon->SetOwner(Character);
 	EquippedWeapon->ShowPickupWidget(false);
+	EquippedWeapon->SetInstigator(Character);
 }
 
