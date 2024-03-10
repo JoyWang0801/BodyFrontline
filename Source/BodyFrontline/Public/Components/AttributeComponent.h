@@ -20,6 +20,7 @@ public:
 
 	void ReceiveDamage(float Damage);
 	float GetHealthPercent();
+	bool IsAlive();
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
