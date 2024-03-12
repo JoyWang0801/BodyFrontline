@@ -6,7 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
-
+#include "Weapon/Projectile.h"
+#include "Characters/WhiteBloodCellCharacter.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -34,19 +35,36 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Attributes && HealthBarWidget)
 	{
 		Attributes->ReceiveDamage(DamageAmount);
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+
 	}
+
+	//if (DamageCauser && DamageCauser->GetOwner())
+	//{
+	//	AWhiteBloodCellCharacter* WBCCharacter = Cast<AWhiteBloodCellCharacter>(DamageCauser->GetOwner());
+	//	if (WBCCharacter) 
+	//	{
+	//		// From weapon to hit location (cursor position)
+	//		FVector ToTarget = WBCCharacter->GetActorLocation() - GetActorLocation();
+	//		FRotator TargetRotation = ToTarget.Rotation();
+
+	//		//FActorSpawnParameters SpawnParams;
+	//		UWorld* World = GetWorld();
+	//		if (World && ProjectileClass)
+	//		{
+	//			FActorSpawnParameters SpawnParams;
+	//			SpawnParams.Owner = this;
+	//			SpawnParams.Instigator = this;
+	//			AProjectile* Projectile = World->SpawnActor<AProjectile>(ProjectileClass, GetActorLocation(), TargetRotation);
+	//			UE_LOG(LogTemp, Warning, TEXT("Location %s."), *GetOwner()->GetName());
+	//		}
+	//	}
+	//}
 
 	return DamageAmount;
 }

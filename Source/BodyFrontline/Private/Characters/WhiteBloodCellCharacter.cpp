@@ -17,7 +17,8 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Math/UnrealMathUtility.h"
 #include "Characters/WBCAnimInstance.h"
-
+#include "Components/AttributeComponent.h"
+#include "HUD/HealthBarComponent.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -36,6 +37,9 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -211,5 +215,16 @@ void AWhiteBloodCellCharacter::PlayFireMontage()
 	{
 		AnimInstance->Montage_Play(FireWeaponMontage);
 	}
+}
+
+float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (Attributes && HealthBarWidget)
+	{
+		Attributes->ReceiveDamage(DamageAmount);
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	}
+
+	return DamageAmount;
 }
 

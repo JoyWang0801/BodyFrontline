@@ -9,6 +9,7 @@
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundCue.h"
 #include "Enemy/Enemy.h"
+#include "Characters/WhiteBloodCellCharacter.h"
 
 
 // Sets default values
@@ -57,8 +58,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (Hit.GetActor()) 
 	{
-		if (Cast<AEnemy>(Hit.GetActor())) 
+		if (Cast<AEnemy>(Hit.GetActor()) || Cast<AWhiteBloodCellCharacter>(Hit.GetActor()))
 		{
+
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
 				Damage,
@@ -66,6 +68,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 				this,
 				UDamageType::StaticClass()
 			);
+		}
+		else 
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Somewhere else"))
 		}
 	}
 

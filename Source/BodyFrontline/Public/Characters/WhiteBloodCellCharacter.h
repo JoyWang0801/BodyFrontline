@@ -33,6 +33,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	void PlayFireMontage();
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
@@ -83,4 +84,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	class UAnimMontage* FireWeaponMontage;
+
+	UPROPERTY(VisibleAnywhere)
+	class UAttributeComponent* Attributes;
+
+	UPROPERTY(VisibleAnywhere)
+	class UHealthBarComponent* HealthBarWidget;
 };
