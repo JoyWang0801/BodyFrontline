@@ -69,11 +69,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 				UDamageType::StaticClass()
 			);
 		}
-		else 
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Somewhere else"))
-		}
 	}
+
+	//AWhiteBloodCellCharacter* OwnerCharacter = Cast<AWhiteBloodCellCharacter>(GetOwner());
+	//if (OwnerCharacter)
+	//{
+	//	AController* OwnerController = OwnerCharacter->Controller;
+	//	if (OwnerController)
+	//	{
+	//		UGameplayStatics::ApplyDamage(OtherActor, Damage, OwnerController, this, UDamageType::StaticClass());
+	//	}
+	//}
 
 	Destroy();
 }

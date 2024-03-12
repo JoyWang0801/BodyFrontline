@@ -28,9 +28,9 @@ public:
 
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
+	void DisableSphereCollision();
 	FORCEINLINE void SetWeaponState(EWeaponState state) { WeaponState = state; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
-
 
 protected:
 	// Called when the game starts or when spawned

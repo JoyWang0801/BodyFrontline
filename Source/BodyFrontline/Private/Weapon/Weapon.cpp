@@ -72,3 +72,12 @@ void AWeapon::Fire(const FVector& HitTarget)
 	}
 }
 
+void AWeapon::DisableSphereCollision()
+{
+	if (AreaSphere)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No collision"));
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
