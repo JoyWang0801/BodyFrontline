@@ -36,24 +36,29 @@ void UCombatComponent::FireButtonPressed(bool bIsPressed)
 	}
 }
 
-void UCombatComponent::TraceToCrosshairs(FHitResult& TraceHitResult)
+void UCombatComponent::TraceToCrosshairs(FHitResult& HitResult)
 {
 	FVector Head = Character->GetMesh()->GetSocketLocation("Head");
 	GetWorld()->LineTraceSingleByChannel(
-		TraceHitResult,
+		HitResult,
 		Head,
-		AimingTargetPosition,
+		CrosshairPosition,
 		ECollisionChannel::ECC_Visibility
 	);
-	if (!TraceHitResult.bBlockingHit) 
+
+	// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 5, FColor::Purple, true, 5.f);
+
+	if (!HitResult.bBlockingHit)
 	{
-		TraceHitResult.ImpactPoint = AimingTargetPosition;
-		HitTarget = AimingTargetPosition;
+		HitResult.ImpactPoint = CrosshairPosition;
+		HitTarget = CrosshairPosition;
 	}
 	else 
 	{
-		HitTarget = TraceHitResult.ImpactPoint;
+		HitTarget = HitResult.ImpactPoint;
 	}
+
+
 }
 
 
@@ -70,7 +75,6 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 
 	if (Character == nullptr || WeaponToEquip == nullptr) return;
-	UE_LOG(LogTemp, Warning, TEXT("In EquipWeapon"));
 
 	EquippedWeapon = WeaponToEquip;
 	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);

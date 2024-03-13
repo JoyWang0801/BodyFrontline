@@ -27,7 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 	void FireButtonPressed(bool bIsPressed);
 	void TraceToCrosshairs(FHitResult& TraceHitResult);
-	FVector AimingTargetPosition = FVector(0.f);
+	FVector CrosshairPosition = FVector(0.f);
 	bool isInEyeSight = false;
 private:	
 	class AWhiteBloodCellCharacter* Character;

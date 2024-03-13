@@ -167,7 +167,8 @@ void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
 			AO_Pitch = Distance.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
 			if (Combat)
 			{
-				Combat->AimingTargetPosition = Intersection;
+				// Combat->HitTarget = Intersection;
+				Combat->CrosshairPosition = Intersection;
 				Combat->isInEyeSight = (GetActorForwardVector().X > 0 && Distance.X> 0) || (GetActorForwardVector().X < 0 && Distance.X < 0);
 			}
 			// DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);

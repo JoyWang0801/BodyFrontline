@@ -16,8 +16,8 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 
 		// From weapon to hit location (cursor position)
 		FVector ToTarget = HitTarget - SocketTransform.GetLocation();
-		FRotator TargetRotation = GetOwner()->GetActorRotation();
-		// UE_LOG(LogTemp, Warning, TEXT("%s"), *GetOwner()->GetName());
+		FRotator TargetRotation = ToTarget.Rotation();
+		 UE_LOG(LogTemp, Warning, TEXT("HitTarget: %s , SocketTransform.GetLocation(): %s."), *HitTarget.ToString(), *SocketTransform.GetLocation().ToString());
 		if (ProjectileClass && InstigatorPawn)
 		{
 			FActorSpawnParameters SpawnParams;
@@ -25,7 +25,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 			SpawnParams.Instigator = InstigatorPawn;
 			UWorld* World = GetWorld();
 			if (World) 
-			{
+			{		// todo - angel not correct
 				World->SpawnActor<AProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
 			}
 		}
