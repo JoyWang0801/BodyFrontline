@@ -25,7 +25,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 			SpawnParams.Instigator = InstigatorPawn;
 			UWorld* World = GetWorld();
 			if (World) 
-			{		// todo - angel not correct
+			{
 				World->SpawnActor<AProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
 			}
 		}
