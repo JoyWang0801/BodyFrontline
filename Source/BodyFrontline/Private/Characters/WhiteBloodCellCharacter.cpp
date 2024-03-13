@@ -20,6 +20,8 @@
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Items/Item.h"
+
 
 // Sets default values
 AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
@@ -161,18 +163,12 @@ void AWhiteBloodCellCharacter::GetCursorPositionInThreeD()
 			FVector Distance = Intersection - Head;
 
 			float GroundVelocity = GetCharacterMovement()->Velocity.X;
-			
-			
-			// UE_LOG(LogTemp, Warning, TEXT("Distance.X: %f."), GetActorForwardVector().X); // TODO - handle intersection is not on the same direction
 			AO_Pitch = Distance.Z / 2.0f; // Don't have any better way to do the calculation. TODO - Will need to adjust this
 			if (Combat)
 			{
-				// Combat->HitTarget = Intersection;
 				Combat->CrosshairPosition = Intersection;
 				Combat->isInEyeSight = (GetActorForwardVector().X > 0 && Distance.X> 0) || (GetActorForwardVector().X < 0 && Distance.X < 0);
 			}
-			// DrawDebugDirectionalArrow(GetWorld(), OutHit.TraceStart, Intersection, 500.0f, FColor::Green, false, 1.0f, 0U, 0.4f);
-			// DrawDebugSolidPlane(GetWorld(), );
 		}
 	}
 }
@@ -227,5 +223,15 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 	}
 
 	return DamageAmount;
+}
+
+void AWhiteBloodCellCharacter::SetOverlappingItem(AItem* Item)
+{
+	OverlappingItem = Item;
+}
+
+void AWhiteBloodCellCharacter::AddSouls(ASoul* Soul)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Soul +1"));
 }
 

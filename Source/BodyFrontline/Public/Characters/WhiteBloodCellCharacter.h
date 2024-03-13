@@ -5,18 +5,20 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Interfaces/PickupInterface.h"
 #include "WhiteBloodCellCharacter.generated.h"
-
 
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class APlayerCamera; 
-class  APlayerCameraManager;
+class APlayerCameraManager;
+class AItem;
+class ASoul; 
 
 UCLASS()
-class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter
+class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter, public IPickupInterface
 {
 	GENERATED_BODY()
 
@@ -34,6 +36,8 @@ public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	void PlayFireMontage();
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void SetOverlappingItem(AItem* Item) override;
+	virtual void AddSouls( ASoul* Soul) override;
 
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
@@ -90,4 +94,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleInstanceOnly)
+	class AItem* OverlappingItem;
 };
