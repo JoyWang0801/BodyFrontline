@@ -18,9 +18,11 @@
 #include "Math/UnrealMathUtility.h"
 #include "Characters/WBCAnimInstance.h"
 #include "Components/AttributeComponent.h"
-#include "HUD/HealthBarComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Items/Item.h"
+#include "HUD/HealthBarComponent.h"
+#include "HUD/BodyFrontlineHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 
 // Sets default values
@@ -59,11 +61,11 @@ void AWhiteBloodCellCharacter::BeginPlay()
 		}
 
 		PlayerController->bShowMouseCursor = true;
+
+		InitOverlay();
 	}
 
 	PlayerCameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-
-
 	//if (CameraClass) 
 	//{
 	//
@@ -73,6 +75,21 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	//	// APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass, SpawnLocation, SpawnRotation, SpawnParameters);
 	//	APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass);
 	//}
+}
+
+void AWhiteBloodCellCharacter::InitOverlay()
+{
+	ABodyFrontlineHUD* BF_HUD = Cast<ABodyFrontlineHUD>(PlayerController->GetHUD());
+	if (BF_HUD)
+	{
+		PlayerOverlay = BF_HUD->GetSlashOverlay();
+		if (PlayerOverlay)
+		{
+			PlayerOverlay->SetWave(Attributes->GetWaveCount());
+			PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+			PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
+		}
+	}
 }
 
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
@@ -232,6 +249,8 @@ void AWhiteBloodCellCharacter::SetOverlappingItem(AItem* Item)
 
 void AWhiteBloodCellCharacter::AddSouls(ASoul* Soul)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Soul +1"));
+	// UE_LOG(LogTemp, Warning, TEXT("Soul +1"));
+	Attributes->IncreaseSoul(1);
+	PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
 }
 

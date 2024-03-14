@@ -42,6 +42,22 @@ float UAttributeComponent::GetHealthPercent()
 	return Health/MaxHealth;
 }
 
+int32 UAttributeComponent::GetSoulsCount()
+{
+	return SoulsCount;
+}
+
+
+int32 UAttributeComponent::GetTimeCountdown()
+{
+	return TimeCountdown;
+}
+
+int32 UAttributeComponent::GetWaveCount()
+{
+	return WaveCount;
+}
+
 bool UAttributeComponent::IsAlive()
 {
 	return Health > 0.f;

@@ -20,7 +20,14 @@ public:
 
 	void ReceiveDamage(float Damage);
 	float GetHealthPercent();
+	int32 GetSoulsCount();
+	int32 GetTimeCountdown();		// TODO - Will probably move to AI classes
+	int32 GetWaveCount();			// TODO - Will probably move to AI classes
 	bool IsAlive();
+
+	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
+	FORCEINLINE void UpdateTime() { TimeCountdown -= 1; }
+	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -34,6 +41,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	float Health = 100.f;
 
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	int32 SoulsCount = 0;
 
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	int32 TimeCountdown = 100;
+
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	int32 WaveCount = 0;
 		
 };

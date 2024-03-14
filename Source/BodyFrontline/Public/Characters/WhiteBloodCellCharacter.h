@@ -16,6 +16,7 @@ class APlayerCamera;
 class APlayerCameraManager;
 class AItem;
 class ASoul; 
+class UPlayerOverlay;
 
 UCLASS()
 class BODYFRONTLINE_API AWhiteBloodCellCharacter : public ACharacter, public IPickupInterface
@@ -44,6 +45,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void InitOverlay();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* WhiteBloodCellMappingContext;
@@ -97,4 +100,7 @@ private:
 
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
+
+	UPROPERTY()
+	UPlayerOverlay* PlayerOverlay;
 };
