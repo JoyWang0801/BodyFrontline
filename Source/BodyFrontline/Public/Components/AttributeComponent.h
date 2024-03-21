@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "AttributeComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BODYFRONTLINE_API UAttributeComponent : public UActorComponent
 {
@@ -25,9 +24,12 @@ public:
 	int32 GetWaveCount();			// TODO - Will probably move to AI classes
 	bool IsAlive();
 
+	FTimerHandle GameTimer;
+
 	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
-	FORCEINLINE void UpdateTime() { TimeCountdown -= 1; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
+	FORCEINLINE void UpdateTimer() { TimeCountdown--; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -50,4 +52,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	int32 WaveCount = 0;
 		
+
+
 };

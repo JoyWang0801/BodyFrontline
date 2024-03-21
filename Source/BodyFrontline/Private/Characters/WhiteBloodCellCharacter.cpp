@@ -44,6 +44,7 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
 }
 
 // Called when the game starts or when spawned
@@ -66,15 +67,11 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	}
 
 	PlayerCameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-	//if (CameraClass) 
-	//{
-	//
-	//	FVector SpawnLocation = GetActorLocation();
-	//	FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
-	//	FActorSpawnParameters SpawnParameters;
-	//	// APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass, SpawnLocation, SpawnRotation, SpawnParameters);
-	//	APlayerCamera* ViewCamera = GetWorld()->SpawnActor<APlayerCamera>(CameraClass);
-	//}
+
+	if (Attributes) 
+	{
+		GetWorldTimerManager().SetTimer(Attributes->GameTimer, this, &AWhiteBloodCellCharacter::UpdateTimerAttribute, 1.0f, true);
+	}
 }
 
 void AWhiteBloodCellCharacter::InitOverlay()
@@ -136,6 +133,15 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 		}
 	}
 
+}
+
+void AWhiteBloodCellCharacter::UpdateTimerAttribute()
+{
+	if (Attributes && PlayerOverlay)
+	{
+		Attributes->UpdateTimer();
+		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+	}
 }
 
 void AWhiteBloodCellCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
@@ -253,4 +259,3 @@ void AWhiteBloodCellCharacter::AddSouls(ASoul* Soul)
 	Attributes->IncreaseSoul(1);
 	PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
 }
-

@@ -82,6 +82,7 @@ private:
 
 	//UPROPERTY(VisibleAnywhere)
 	//UCameraComponent* ViewCamera;
+	void UpdateTimerAttribute();
 
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
