@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Interfaces/GameEnums.h"
 #include "AttributeComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -29,6 +30,7 @@ public:
 	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 	FORCEINLINE void UpdateTimer() { TimeCountdown--; }
+	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
 
 protected:
 	// Called when the game starts
@@ -52,6 +54,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	int32 WaveCount = 0;
 		
-
-
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	EGameDifficulty GameDifficulty = EGameDifficulty::EGD_Easy;
 };

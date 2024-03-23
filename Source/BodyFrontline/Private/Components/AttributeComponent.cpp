@@ -3,6 +3,9 @@
 
 #include "Components/AttributeComponent.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/GameEnums.h"
+#include "Interfaces/BodyFrontlineGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UAttributeComponent::UAttributeComponent()
@@ -20,7 +23,11 @@ void UAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	UBodyFrontlineGameInstance* GameInstance = Cast<UBodyFrontlineGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GameInstance)
+	{
+		GameDifficulty = GameInstance->Diffculty;
+	}
 	
 }
 
