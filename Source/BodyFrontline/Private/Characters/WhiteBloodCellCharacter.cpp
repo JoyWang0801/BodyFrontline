@@ -45,6 +45,7 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
+	Tags.Add(FName("WBC"));
 }
 
 // Called when the game starts or when spawned
