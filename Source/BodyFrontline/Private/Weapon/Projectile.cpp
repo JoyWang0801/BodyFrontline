@@ -58,6 +58,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (Hit.GetActor()) 
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
 		if (Cast<AEnemy>(Hit.GetActor()) || Cast<AWhiteBloodCellCharacter>(Hit.GetActor()))
 		{
 
