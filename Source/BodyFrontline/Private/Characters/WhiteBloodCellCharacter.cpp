@@ -121,7 +121,7 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 void AWhiteBloodCellCharacter::EPressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("EPressed"));
-	if (Combat) 
+	if (Combat && OverlappingWeapon != nullptr)
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}
@@ -236,7 +236,6 @@ void AWhiteBloodCellCharacter::PostInitializeComponents()
 void AWhiteBloodCellCharacter::SetOverlappingWeapon(AWeapon* Weapon)
 {
 	OverlappingWeapon = Weapon;
-	UE_LOG(LogTemp, Warning, TEXT("Is Overlapping"));
 }
 
 void AWhiteBloodCellCharacter::PlayFireMontage()

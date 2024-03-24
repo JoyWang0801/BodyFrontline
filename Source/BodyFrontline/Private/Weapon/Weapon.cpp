@@ -35,11 +35,13 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	 AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
+	AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
+	AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Overlap with weapon"));
 	 AWhiteBloodCellCharacter* WBCCharacter = Cast<AWhiteBloodCellCharacter>(OtherActor);
 	 if (WBCCharacter)
 	 {
@@ -47,6 +49,17 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		 WBCCharacter->SetOverlappingWeapon(this);
 		 PickupWidget->SetVisibility(true);
 	 }
+}
+
+void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Finish Overlap"));
+	AWhiteBloodCellCharacter* WBCCharacter = Cast<AWhiteBloodCellCharacter>(OtherActor);
+	if (WBCCharacter)
+	{
+		WBCCharacter->SetOverlappingWeapon(nullptr);
+		PickupWidget->SetVisibility(false);
+	}
 }
 
 // Called every frame
