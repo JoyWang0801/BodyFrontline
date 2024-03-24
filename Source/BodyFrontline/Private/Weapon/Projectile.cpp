@@ -58,10 +58,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (Hit.GetActor()) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
-		if (Cast<AEnemy>(Hit.GetActor()) || Cast<AWhiteBloodCellCharacter>(Hit.GetActor()))
+		// No ally damage
+		bool HittingRBC = Hit.GetActor()->ActorHasTag(FName("RBC"));
+		bool FromWBC = GetOwner()->ActorHasTag(FName("WBC"));
+		if (!(HittingRBC && FromWBC))
 		{
-
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
 				Damage,
@@ -71,16 +72,6 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			);
 		}
 	}
-
-	//AWhiteBloodCellCharacter* OwnerCharacter = Cast<AWhiteBloodCellCharacter>(GetOwner());
-	//if (OwnerCharacter)
-	//{
-	//	AController* OwnerController = OwnerCharacter->Controller;
-	//	if (OwnerController)
-	//	{
-	//		UGameplayStatics::ApplyDamage(OtherActor, Damage, OwnerController, this, UDamageType::StaticClass());
-	//	}
-	//}
 
 	Destroy();
 }

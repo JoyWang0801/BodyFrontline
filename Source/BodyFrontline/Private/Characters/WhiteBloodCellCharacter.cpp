@@ -45,7 +45,8 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
-	Tags.Add(FName("WBC"));
+	this->Tags.Add(FName("WBC"));
+
 }
 
 // Called when the game starts or when spawned
@@ -72,6 +73,17 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	if (Attributes) 
 	{
 		GetWorldTimerManager().SetTimer(Attributes->GameTimer, this, &AWhiteBloodCellCharacter::UpdateTimerAttribute, 1.0f, true);
+	}
+
+	if (this->ActorHasTag(FName("WBC")))
+	{
+		// Tag exists on this object
+		UE_LOG(LogTemp, Warning, TEXT("Tag 'WBC' successfully added."));
+	}
+	else
+	{
+		// Tag does not exist on this object
+		UE_LOG(LogTemp, Warning, TEXT("Tag 'WBC' not found."));
 	}
 }
 

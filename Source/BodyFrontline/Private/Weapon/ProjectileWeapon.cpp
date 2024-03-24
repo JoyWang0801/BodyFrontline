@@ -17,7 +17,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 		// From weapon to hit location (cursor position)
 		FVector ToTarget = HitTarget - SocketTransform.GetLocation();
 		FRotator TargetRotation = ToTarget.Rotation();
-		 UE_LOG(LogTemp, Warning, TEXT("HitTarget: %s , SocketTransform.GetLocation(): %s."), *HitTarget.ToString(), *SocketTransform.GetLocation().ToString());
+		// UE_LOG(LogTemp, Warning, TEXT("HitTarget: %s , SocketTransform.GetLocation(): %s."), *HitTarget.ToString(), *SocketTransform.GetLocation().ToString());
 		if (ProjectileClass && InstigatorPawn)
 		{
 			FActorSpawnParameters SpawnParams;

@@ -14,14 +14,25 @@ ARBCCharacter::ARBCCharacter()
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
-	Tags.Add(FName("RBC"));
+	this->Tags.Add(FName("RBC"));
+
 }
 
 // Called when the game starts or when spawned
 void ARBCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (this->ActorHasTag(FName("RBC")))
+	{
+		// Tag exists on this object
+		UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' successfully added."));
+	}
+	else
+	{
+		// Tag does not exist on this object
+		UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' not found."));
+	}
 }
 
 void ARBCCharacter::ReceiveDamage(float Damage)
