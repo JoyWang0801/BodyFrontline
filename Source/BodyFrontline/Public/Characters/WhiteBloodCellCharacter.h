@@ -77,11 +77,6 @@ protected:
 	
 
 private:
-	//UPROPERTY(VisibleAnywhere)
-	//USpringArmComponent* CameraBoom;
-
-	//UPROPERTY(VisibleAnywhere)
-	//UCameraComponent* ViewCamera;
 	void UpdateTimerAttribute();
 
 	UPROPERTY(VisibleAnywhere)

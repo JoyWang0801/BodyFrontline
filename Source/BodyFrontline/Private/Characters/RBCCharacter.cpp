@@ -3,6 +3,8 @@
 
 #include "Characters/RBCCharacter.h"
 #include "HUD/HealthBarComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Items/Soul.h"
 
 
 // Sets default values
@@ -61,5 +63,21 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 	}
 
 	return DamageAmount;
+}
+
+void ARBCCharacter::HoldSoul(ASoul* SoulToHold)
+{
+	if (SoulToHold == nullptr) return;
+
+	HoldedSoul = SoulToHold;
+	// HoldedSoul->SetWeaponState(EWeaponState::EWS_Equipped);
+	const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSoulSocket"));
+	if (HandSocket)
+	{
+		HandSocket->AttachActor(HoldedSoul, GetMesh());
+	}
+	HoldedSoul->SetOwner(this);
+	HoldedSoul->SetInstigator(this);
+	HoldedSoul->DisableSphereCollision();
 }
 

@@ -88,3 +88,11 @@ void AItem::Tick(float DeltaTime)
 	}
 }
 
+void AItem::DisableSphereCollision()
+{
+	if (Sphere)
+	{
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+

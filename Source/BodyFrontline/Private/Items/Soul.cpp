@@ -3,9 +3,16 @@
 
 #include "Items/Soul.h"
 #include "Interfaces/PickupInterface.h"
+#include "Characters/RBCCharacter.h"
+
+ASoul::ASoul()
+{
+	Tags.Add(FName("Soul"));
+}
 
 void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// WBC or Enemy, will change to enemy only
 	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
 	if (PickupInterface)
 	{
@@ -15,5 +22,18 @@ void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 		SpawnPickupSound();
 
 		Destroy();
+	}
+	else // RBC
+	{
+		ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+		if (RBC)
+		{
+			RBC->HoldSoul(this);
+			DisableSphereCollision();
+			//SpawnPickupSystem();
+			//SpawnPickupSound();
+
+			//Destroy();
+		}
 	}
 }

@@ -20,6 +20,7 @@ class BODYFRONTLINE_API AItem : public AActor
 public:	
 	AItem();
 	virtual void Tick(float DeltaTime) override;
+	void DisableSphereCollision();
 
 protected:
 	virtual void BeginPlay() override;

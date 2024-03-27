@@ -16,6 +16,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void HoldSoul(class ASoul* SoulToHold);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -30,7 +32,6 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 
-
 	/* Combat and Attribute*/
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	float MaxHealth = 100.f;
@@ -38,4 +39,6 @@ private:
 	// Current health
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	float Health = 100.f;
+
+	ASoul* HoldedSoul;
 };
