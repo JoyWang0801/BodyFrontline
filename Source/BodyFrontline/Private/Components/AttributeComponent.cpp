@@ -6,6 +6,7 @@
 #include "Interfaces/GameEnums.h"
 #include "Interfaces/BodyFrontlineGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values for this component's properties
 UAttributeComponent::UAttributeComponent()
@@ -69,5 +70,10 @@ int32 UAttributeComponent::GetWaveCount()
 bool UAttributeComponent::IsAlive()
 {
 	return Health > 0.f;
+}
+
+void UAttributeComponent::UpdateTimer()
+{
+	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);
 }
 

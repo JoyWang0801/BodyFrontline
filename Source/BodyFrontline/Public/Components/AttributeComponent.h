@@ -24,12 +24,12 @@ public:
 	int32 GetTimeCountdown();		// TODO - Will probably move to AI classes
 	int32 GetWaveCount();			// TODO - Will probably move to AI classes
 	bool IsAlive();
+	void UpdateTimer();
 
 	FTimerHandle GameTimer;
 
 	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
-	FORCEINLINE void UpdateTimer() { TimeCountdown--; }
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
 
 protected:

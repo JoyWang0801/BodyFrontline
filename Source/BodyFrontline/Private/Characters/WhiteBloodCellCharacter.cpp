@@ -154,6 +154,12 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 	{
 		Attributes->UpdateTimer();
 		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+		if (Attributes->GetTimeCountdown() == 0)
+		{
+			// UGameplayStatics::SetGamePaused(this, true);
+			UGameplayStatics::OpenLevel(this, FName("GameEnd"));
+
+		}
 	}
 }
 
