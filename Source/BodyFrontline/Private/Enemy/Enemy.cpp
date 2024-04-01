@@ -8,6 +8,7 @@
 #include "HUD/HealthBarComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Weapon/Projectile.h"
+#include "Items/Soul.h"
 #include "Characters/WhiteBloodCellCharacter.h"
 
 // Sets default values
@@ -70,8 +71,18 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 			SetLifeSpan(1.0f);
 			DeadWidget->SetVisibility(true);
 			HealthBarWidget->SetVisibility(false);
-		}
 
+			if (SoulClass)
+			{
+				FActorSpawnParameters SpawnParams;
+				SpawnParams.Owner = GetOwner();
+				UWorld* World = GetWorld();
+				if (World)
+				{
+					ASoul* soul = World->SpawnActor<ASoul>(SoulClass, GetActorTransform());
+				}
+			}
+		}
 	}
 
 	//if (DamageCauser && DamageCauser->GetOwner())

@@ -38,4 +38,7 @@ private:
 
 	UPROPERTY()
 	ECharacterState CurrentState = ECharacterState::ECS_Alive;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ASoul> SoulClass;
 };

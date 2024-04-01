@@ -73,17 +73,6 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	{
 		GetWorldTimerManager().SetTimer(Attributes->GameTimer, this, &AWhiteBloodCellCharacter::UpdateTimerAttribute, 1.0f, true);
 	}
-
-	if (this->ActorHasTag(FName("WBC")))
-	{
-		// Tag exists on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'WBC' successfully added."));
-	}
-	else
-	{
-		// Tag does not exist on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'WBC' not found."));
-	}
 }
 
 void AWhiteBloodCellCharacter::InitOverlay()
@@ -104,7 +93,7 @@ void AWhiteBloodCellCharacter::InitOverlay()
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 {
 	const FVector2D MovementVector = value.Get<FVector2D>();
-	if (GetController())
+	if (GetController() && WBCState == ECharacterState::ECS_Alive)
 	{
 		const FRotator ControlRotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.f, ControlRotation.Yaw, 0.f);
@@ -120,7 +109,7 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 void AWhiteBloodCellCharacter::EPressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("EPressed"));
-	if (Combat && OverlappingWeapon != nullptr)
+	if (Combat && OverlappingWeapon != nullptr && WBCState == ECharacterState::ECS_Alive)
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}
@@ -130,21 +119,23 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 {
 	// 1 = click LMB, 0 = release LMB
 	const bool actionValue = value.Get<bool>();
-	if (actionValue == 1) 
+	if(WBCState == ECharacterState::ECS_Alive)
 	{
-		if (Combat) 
+		if (actionValue == 1) 
 		{
-			Combat->FireButtonPressed(true);
+			if (Combat) 
+			{
+				Combat->FireButtonPressed(true);
+			}
+		}
+		else  
+		{
+			if (Combat)
+			{
+				Combat->FireButtonPressed(false);
+			}
 		}
 	}
-	else  
-	{
-		if (Combat)
-		{
-			Combat->FireButtonPressed(false);
-		}
-	}
-
 }
 
 void AWhiteBloodCellCharacter::UpdateTimerAttribute()
@@ -265,7 +256,6 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 		if (!Attributes->IsAlive())
 		{
 			WBCState = ECharacterState::ECS_Dead;
-			// SetLifeSpan(1.f);
 			PlayDeathMaterial();
 		}
 	}
