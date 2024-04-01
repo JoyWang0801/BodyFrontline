@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/GameEnums.h"
 #include "Enemy.generated.h"
 
 UCLASS()
@@ -29,6 +30,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* DeadWidget;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY()
+	ECharacterState CurrentState = ECharacterState::ECS_Alive;
 };

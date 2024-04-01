@@ -25,16 +25,16 @@ void ARBCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (this->ActorHasTag(FName("RBC")))
-	{
-		// Tag exists on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' successfully added."));
-	}
-	else
-	{
-		// Tag does not exist on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' not found."));
-	}
+	//if (this->ActorHasTag(FName("RBC")))
+	//{
+	//	// Tag exists on this object
+	//	UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' successfully added."));
+	//}
+	//else
+	//{
+	//	// Tag does not exist on this object
+	//	UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' not found."));
+	//}
 }
 
 void ARBCCharacter::ReceiveDamage(float Damage)

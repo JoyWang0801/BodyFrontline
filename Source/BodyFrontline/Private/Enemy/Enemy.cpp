@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Weapon/Projectile.h"
 #include "Characters/WhiteBloodCellCharacter.h"
 
@@ -23,6 +24,9 @@ AEnemy::AEnemy()
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+	DeadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("DeadWidget"));
+	DeadWidget->SetupAttachment(GetRootComponent());
+	DeadWidget->SetVisibility(false);
 
 	this->Tags.Add(FName("Enemy"));
 
@@ -55,7 +59,18 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	if (Attributes && HealthBarWidget)
 	{
 		Attributes->ReceiveDamage(DamageAmount);
-		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+		float CurrentHealthPercent = Attributes->GetHealthPercent();
+		HealthBarWidget->SetHealthPercent(CurrentHealthPercent);
+
+		if (!Attributes->IsAlive())
+		{
+			CurrentState = ECharacterState::ECS_Dead;
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			GetMesh()->SetVisibility(false);
+			SetLifeSpan(1.0f);
+			DeadWidget->SetVisibility(true);
+			HealthBarWidget->SetVisibility(false);
+		}
 
 	}
 

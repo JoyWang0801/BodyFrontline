@@ -46,7 +46,6 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
 	this->Tags.Add(FName("WBC"));
-
 }
 
 // Called when the game starts or when spawned
@@ -257,10 +256,18 @@ void AWhiteBloodCellCharacter::PlayFireMontage()
 
 float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (Attributes && HealthBarWidget)
+	if (Attributes && HealthBarWidget && WBCState == ECharacterState::ECS_Alive)
 	{
 		Attributes->ReceiveDamage(DamageAmount);
-		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+		float CurrentHealthPercent = Attributes->GetHealthPercent();
+		HealthBarWidget->SetHealthPercent(CurrentHealthPercent);
+
+		if (!Attributes->IsAlive())
+		{
+			WBCState = ECharacterState::ECS_Dead;
+			// SetLifeSpan(1.f);
+			PlayDeathMaterial();
+		}
 	}
 
 	return DamageAmount;

@@ -4,26 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Projectile.generated.h"
+#include "CellProjectile.generated.h"
 
 UCLASS()
-class BODYFRONTLINE_API AProjectile : public AActor
+class BODYFRONTLINE_API ACellProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AProjectile();
+	ACellProjectile();
 	virtual void Tick(float DeltaTime) override;
+
 protected:
 	virtual void BeginPlay() override;
-	// virtual void Destroyed() override;
 
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:	
 	UPROPERTY(EditAnywhere)
-	class UBoxComponent* CollisionBox;
+	class USphereComponent* CollisionBall;
 
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
@@ -36,8 +36,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticles;
 
-	UPROPERTY(EditAnywhere)
-	class USoundCue* ImpactSound;
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	class USoundBase* OutSound;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	class USoundBase* ImpactSound;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	float Damage = 20.f;

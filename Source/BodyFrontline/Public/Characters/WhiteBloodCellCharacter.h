@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "Interfaces/PickupInterface.h"
+#include "Interfaces/GameEnums.h"
 #include "WhiteBloodCellCharacter.generated.h"
 
 class USpringArmComponent;
@@ -40,6 +41,9 @@ public:
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls( ASoul* Soul) override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+	void PlayDeathMaterial();
+
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
 protected:
@@ -63,6 +67,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<APlayerCamera> CameraClass;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ECharacterState WBCState = ECharacterState::ECS_Alive;
+
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
@@ -73,9 +80,6 @@ protected:
 	class AWeapon* OverlappingWeapon;
 
 	float AO_Pitch;
-
-	
-
 private:
 	void UpdateTimerAttribute();
 
