@@ -17,6 +17,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void HoldSoul(class ASoul* SoulToHold);
+	FORCEINLINE ASoul* GetHoldingSoul() { return HoldedSoul; }
 
 protected:
 	virtual void BeginPlay() override;

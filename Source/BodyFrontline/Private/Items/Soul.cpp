@@ -13,27 +13,34 @@ ASoul::ASoul()
 void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// WBC or Enemy, will change to enemy only
-	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
-	if (PickupInterface)
+	//IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
+	//if (PickupInterface)
+	//{
+	//	PickupInterface->AddSouls(this);
+
+	//	SpawnPickupSystem();
+	//	SpawnPickupSound();
+
+	//	Destroy();
+	//}
+	//else // RBC
+	//{
+	//	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+	//	if (RBC)
+	//	{
+	//		RBC->HoldSoul(this);
+	//		DisableSphereCollision();
+	//		//SpawnPickupSystem();
+	//		//SpawnPickupSound();
+
+	//		//Destroy();
+	//	}
+	//}
+
+	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+	if (RBC)
 	{
-		PickupInterface->AddSouls(this);
-
-		SpawnPickupSystem();
-		SpawnPickupSound();
-
-		Destroy();
-	}
-	else // RBC
-	{
-		ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-		if (RBC)
-		{
-			RBC->HoldSoul(this);
-			DisableSphereCollision();
-			//SpawnPickupSystem();
-			//SpawnPickupSound();
-
-			//Destroy();
-		}
+		RBC->HoldSoul(this);
+		DisableSphereCollision();
 	}
 }
