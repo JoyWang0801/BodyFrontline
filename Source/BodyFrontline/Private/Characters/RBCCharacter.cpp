@@ -10,31 +10,17 @@
 // Sets default values
 ARBCCharacter::ARBCCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
 	this->Tags.Add(FName("RBC"));
-
 }
 
-// Called when the game starts or when spawned
 void ARBCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//if (this->ActorHasTag(FName("RBC")))
-	//{
-	//	// Tag exists on this object
-	//	UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' successfully added."));
-	//}
-	//else
-	//{
-	//	// Tag does not exist on this object
-	//	UE_LOG(LogTemp, Warning, TEXT("Tag 'RBC' not found."));
-	//}
 }
 
 void ARBCCharacter::ReceiveDamage(float Damage)
@@ -47,7 +33,6 @@ float ARBCCharacter::GetHealthPercent()
 	return Health / MaxHealth;
 }
 
-// Called every frame
 void ARBCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

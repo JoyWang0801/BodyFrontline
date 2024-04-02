@@ -23,7 +23,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+	float Amplitude = 1.25f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
+	float TimeConstant = 5.f;
+
+private:
+	FORCEINLINE float TransformedSin() { return Amplitude * FMath::Sin(RunningTime * TimeConstant); }
+
 	UPROPERTY(VisibleAnywhere)
 	class UAttributeComponent* Attributes;
 
@@ -41,4 +49,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ASoul> SoulClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float RunningTime;
 };
