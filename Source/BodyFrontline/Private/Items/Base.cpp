@@ -4,6 +4,8 @@
 #include "Items/Base.h"
 #include "Characters/RBCCharacter.h"
 #include "Items/Soul.h"
+#include "Characters/WhiteBloodCellCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 ABase::ABase()
 {
@@ -22,11 +24,16 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
 	if (RBC)
 	{
+		DisableSphereCollision();
 		ASoul* Holding = RBC->GetHoldingSoul();
+		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+		WBC->AddSouls(Holding);
 		//DisableSphereCollision();
 		SpawnPickupSystem();
 		SpawnPickupSound();
 
 		Holding->Destroy();
+
+		
 	}
 }
