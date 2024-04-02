@@ -21,19 +21,24 @@ void ABase::Tick(float DeltaTime)
 
 void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s overlap."), *OverlappedComponent->GetName());
+
+
 	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
 	if (RBC)
 	{
-		DisableSphereCollision();
+		//RBC->SetInBaseArea(true);
 		ASoul* Holding = RBC->GetHoldingSoul();
-		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-		WBC->AddSouls(Holding);
-		//DisableSphereCollision();
-		SpawnPickupSystem();
-		SpawnPickupSound();
+		if(Holding)
+		{
+			Holding->DisableSphereCollision();
+			AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+			WBC->AddSouls(Holding);
+			//DisableSphereCollision();
+			SpawnPickupSystem();
+			SpawnPickupSound();
 
-		Holding->Destroy();
-
-		
+			Holding->Destroy();
+		}
 	}
 }
