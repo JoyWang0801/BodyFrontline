@@ -7,18 +7,11 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
 
-// Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
-
-// Called when the game starts
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();	
@@ -46,8 +39,6 @@ void UCombatComponent::TraceToCrosshairs(FHitResult& HitResult)
 		ECollisionChannel::ECC_Visibility
 	);
 
-	// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 5, FColor::Purple, true, 5.f);
-
 	if (!HitResult.bBlockingHit)
 	{
 		HitResult.ImpactPoint = CrosshairPosition;
@@ -57,12 +48,8 @@ void UCombatComponent::TraceToCrosshairs(FHitResult& HitResult)
 	{
 		HitTarget = HitResult.ImpactPoint;
 	}
-
-
 }
 
-
-// Called every frame
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -73,7 +60,6 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
-
 	if (Character == nullptr || WeaponToEquip == nullptr) return;
 
 	EquippedWeapon = WeaponToEquip;

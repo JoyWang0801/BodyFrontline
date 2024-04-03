@@ -36,18 +36,6 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	if (this->ActorHasTag(FName("Enemy")))
-	{
-		// Tag exists on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'Enemy' successfully added."));
-	}
-	else
-	{
-		// Tag does not exist on this object
-		UE_LOG(LogTemp, Warning, TEXT("Tag 'Enemy' not found."));
-	}
 }
 
 void AEnemy::Tick(float DeltaTime)

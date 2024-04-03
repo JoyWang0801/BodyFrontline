@@ -49,12 +49,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	if (Hit.GetActor()) 
 	{
-	
-
 		// No ally damage
 		bool HittingRBC = Hit.GetActor()->ActorHasTag(FName("RBC"));
 		bool FromWBC = GetOwner()->ActorHasTag(FName("WBC"));
-		if (!(HittingRBC && FromWBC))
+		if (!(HittingRBC && FromWBC) && !(Hit.GetActor() == GetInstigator()))
 		{
 			if (ImpactParticles)
 			{

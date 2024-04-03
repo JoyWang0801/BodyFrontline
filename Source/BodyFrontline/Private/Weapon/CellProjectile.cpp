@@ -47,8 +47,6 @@ void ACellProjectile::BeginPlay()
 
 void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-
-
 	if (Hit.GetActor())
 	{
 		// No ally damage
@@ -63,7 +61,6 @@ void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 				//UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 				UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, Hit.Location);
 			}
-
 
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
