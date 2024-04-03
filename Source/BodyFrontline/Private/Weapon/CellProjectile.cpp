@@ -47,23 +47,24 @@ void ACellProjectile::BeginPlay()
 
 void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (ImpactParticles)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
-	}
-	if (ImpactSound)
-	{
-		//UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, Hit.Location);
-	}
+
 
 	if (Hit.GetActor())
 	{
 		// No ally damage
-		bool HittingRBC = Hit.GetActor()->ActorHasTag(FName("RBC"));
-		bool FromWBC = GetOwner()->ActorHasTag(FName("WBC"));
-		if (!(HittingRBC && FromWBC))
+		if (!(Hit.GetActor()->Tags == GetOwner()->Tags))
 		{
+			if (ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+			}
+			if (ImpactSound)
+			{
+				//UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+				UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, Hit.Location);
+			}
+
+
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
 				Damage,
@@ -71,10 +72,11 @@ void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 				this,
 				UDamageType::StaticClass()
 			);
+
+			Destroy();
 		}
 	}
 
-	Destroy();
 }
 
 // Called every frame

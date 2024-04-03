@@ -47,22 +47,25 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (ImpactParticles) 
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
-	}
-	if (ImpactSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-	}
-
 	if (Hit.GetActor()) 
 	{
+	
+
 		// No ally damage
 		bool HittingRBC = Hit.GetActor()->ActorHasTag(FName("RBC"));
 		bool FromWBC = GetOwner()->ActorHasTag(FName("WBC"));
 		if (!(HittingRBC && FromWBC))
 		{
+			if (ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+			}
+			if (ImpactSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+			}
+
+
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
 				Damage,
@@ -70,10 +73,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 				this,
 				UDamageType::StaticClass()
 			);
+
+			Destroy();
 		}
 	}
-
-	Destroy();
 }
 
 // Called every frame
