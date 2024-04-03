@@ -44,6 +44,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
 	void PlayDeathMaterial();
 
+
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 
 protected:
@@ -67,13 +68,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<APlayerCamera> CameraClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ECharacterState WBCState = ECharacterState::ECS_Alive;
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
 	void Move(const FInputActionValue& value);
+	void CharacterJump(const FInputActionValue& value);
 	void EPressed();
 	void FireButton(const FInputActionValue& value);
 
@@ -82,6 +84,8 @@ protected:
 	float AO_Pitch;
 private:
 	void UpdateTimerAttribute();
+
+	void Reset();
 
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
@@ -103,4 +107,7 @@ private:
 
 	UPROPERTY()
 	UPlayerOverlay* PlayerOverlay;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* WBCMaterial;
 };

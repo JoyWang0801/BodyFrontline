@@ -7,11 +7,20 @@
 
 ASoul::ASoul()
 {
+	// Super::AActor();
+
 	Tags.Add(FName("Soul"));
 }
 
 void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+	if (RBC)
+	{
+		RBC->HoldSoul(this);
+		DisableSphereCollision();
+	}
+
 	// WBC or Enemy, will change to enemy only
 	//IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
 	//if (PickupInterface)
@@ -37,10 +46,5 @@ void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	//	}
 	//}
 
-	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-	if (RBC)
-	{
-		RBC->HoldSoul(this);
-		DisableSphereCollision();
-	}
+
 }

@@ -72,6 +72,11 @@ bool UAttributeComponent::IsAlive()
 	return Health > 0.f;
 }
 
+void UAttributeComponent::UpdateDeadTimer()
+{
+	 DeadTimer = FMath::Clamp(DeadTimer - 1, -1.f, 5);
+}
+
 void UAttributeComponent::UpdateTimer()
 {
 	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);

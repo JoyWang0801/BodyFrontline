@@ -18,6 +18,7 @@ public:
 	void SetSouls(int32 Soul);
 	void SetTimeCount(int32 Time);
 	void SetWave(int32 Wav);
+	void SetCD(int32 cd);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -28,4 +29,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* WaveCount;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* CD;
 };

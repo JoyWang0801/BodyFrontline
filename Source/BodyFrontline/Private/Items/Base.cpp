@@ -9,6 +9,8 @@
 
 ABase::ABase()
 {
+
+	Tags.Add(FName("Base"));
 }
 
 void ABase::Tick(float DeltaTime)

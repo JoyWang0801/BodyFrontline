@@ -31,3 +31,18 @@ void UPlayerOverlay::SetWave(int32 Wav)
 		WaveCount->SetText(WavText);
 	}
 }
+
+void UPlayerOverlay::SetCD(int32 cd)
+{
+	if (CD)
+	{
+		if (cd > -1)
+		{
+			CD->SetText(FText::FromString(FString::Printf(TEXT("%d"), cd)));
+		}
+		else 
+		{
+			CD->SetText(FText::FromString(" "));
+		}
+	}
+}

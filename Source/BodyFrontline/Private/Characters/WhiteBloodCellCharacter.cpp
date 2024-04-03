@@ -23,7 +23,7 @@
 #include "HUD/HealthBarComponent.h"
 #include "HUD/BodyFrontlineHUD.h"
 #include "HUD/PlayerOverlay.h"
-
+#include "Materials/MaterialInterface.h"
 
 // Sets default values
 AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
@@ -106,6 +106,14 @@ void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 	}
 }
 
+void AWhiteBloodCellCharacter::CharacterJump(const FInputActionValue& value)
+{
+	if (WBCState == ECharacterState::ECS_Alive)
+	{
+		ACharacter::Jump();
+	}
+}
+
 void AWhiteBloodCellCharacter::EPressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("EPressed"));
@@ -144,12 +152,32 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 	{
 		Attributes->UpdateTimer();
 		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+		if (WBCState == ECharacterState::ECS_Dead) 
+		{
+			Attributes->UpdateDeadTimer();
+			PlayerOverlay->SetCD(Attributes->GetDeadTimer());
+			if (Attributes->GetDeadTimer() < 0) 
+			{
+				Reset();
+			}
+		}
 		if (Attributes->GetTimeCountdown() == 0)
 		{
 			// UGameplayStatics::SetGamePaused(this, true);
 			UGameplayStatics::OpenLevel(this, FName("GameEnd"));
-
 		}
+	}
+}
+
+void AWhiteBloodCellCharacter::Reset()
+{
+	if (Attributes && HealthBarWidget)
+	{
+		WBCState = ECharacterState::ECS_Alive;
+		Attributes->ResetHealth();
+		Attributes->ResetDeadTimer();
+		GetMesh()->SetMaterial(0, WBCMaterial);
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	}
 }
 
@@ -213,7 +241,7 @@ void AWhiteBloodCellCharacter::SetupPlayerInputComponent(UInputComponent* Player
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::Move);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::CharacterJump);
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::EPressed);
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &AWhiteBloodCellCharacter::FireButton);
 	}
@@ -257,6 +285,7 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 		{
 			WBCState = ECharacterState::ECS_Dead;
 			PlayDeathMaterial();
+			Attributes->SetDeadStartTime(Attributes->GetTimeCountdown());
 		}
 	}
 
@@ -270,7 +299,7 @@ void AWhiteBloodCellCharacter::SetOverlappingItem(AItem* Item)
 
 void AWhiteBloodCellCharacter::AddSouls(ASoul* Soul)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Soul +1"));
 	Attributes->IncreaseSoul(1);
 	PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
 }
+
