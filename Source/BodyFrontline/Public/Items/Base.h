@@ -18,20 +18,22 @@ public:
 	ABase();
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
+	void UpdateHealth();
 
 protected:
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void BeginPlay() override;
 
 private:
 	float GetHealthPercent();
 
 	/* Combat and Attribute*/
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
-	float MaxHealth = 1000.f;
+	float MaxHealth = 30.f;
 
 	// Current health
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
-	float Health = 1000.f;
+	float Health = 100.f;
 
+	FTimerHandle HealthTimer;
 };

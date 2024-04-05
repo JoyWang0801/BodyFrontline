@@ -278,7 +278,6 @@ void AWhiteBloodCellCharacter::UseItem(EItemType item)
 	{
 		DmgIsBoosted = true;
 		Attributes->ResetItemEffectTimer();
-		//Attributes->SetItemEffectStartTime(Attributes->GetTimeCountdown());
 	}
 }
 
@@ -294,7 +293,6 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 		{
 			WBCState = ECharacterState::ECS_Dead;
 			PlayDeathMaterial();
-			//Attributes->SetDeadStartTime(Attributes->GetTimeCountdown());
 		}
 	}
 

@@ -82,9 +82,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 				UDamageType::StaticClass()
 			);
 
-			Destroy();
 		}
 	}
+	Destroy();
 }
 
 // Called every frame

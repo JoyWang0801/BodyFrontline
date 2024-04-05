@@ -107,7 +107,7 @@ void AEnemy::DropRandom()
 
 	if (ItemClasses.Num() > 0)
 	{
-		int32 RandomNumber = FMath::RandRange(0, ItemClasses.Num() - 1);
+		int32 RandomNumber = FMath::RandRange(0, ItemClasses.Num());
 		if (World)
 		{
 			if (RandomNumber == 0) 
@@ -117,6 +117,10 @@ void AEnemy::DropRandom()
 			else if (RandomNumber == 1) 
 			{
 				World->SpawnActor<ADamageBoost>(ItemClasses[RandomNumber], GetActorTransform());
+			}
+			else if (RandomNumber > ItemClasses.Num() - 1) 
+			{
+				// not dropping any item
 			}
 		}
 	}
