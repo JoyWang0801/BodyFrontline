@@ -19,6 +19,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void Die();
+
+	void DropRandom();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -49,6 +53,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ASoul> SoulClass;
+
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<class AItem>> ItemClasses;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;

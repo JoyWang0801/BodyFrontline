@@ -37,6 +37,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	void PlayFireMontage();
+	void UseItem(EItemType item);
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls( ASoul* Soul) override;
@@ -46,6 +47,7 @@ public:
 
 
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -84,7 +86,6 @@ protected:
 	float AO_Pitch;
 private:
 	void UpdateTimerAttribute();
-
 	void Reset();
 
 	UPROPERTY(VisibleAnywhere)
@@ -110,4 +111,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UMaterialInterface* WBCMaterial;
+
+	bool DmgIsBoosted = false;
 };

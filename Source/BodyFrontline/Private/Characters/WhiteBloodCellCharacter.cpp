@@ -4,7 +4,6 @@
 #include "Characters/WhiteBloodCellCharacter.h"
 #include "Characters/PlayerCamera.h"
 #include "Components/SphereComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
@@ -18,7 +17,6 @@
 #include "Math/UnrealMathUtility.h"
 #include "Characters/WBCAnimInstance.h"
 #include "Components/AttributeComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Items/Item.h"
 #include "HUD/HealthBarComponent.h"
 #include "HUD/BodyFrontlineHUD.h"
@@ -116,7 +114,6 @@ void AWhiteBloodCellCharacter::CharacterJump(const FInputActionValue& value)
 
 void AWhiteBloodCellCharacter::EPressed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("EPressed"));
 	if (Combat && OverlappingWeapon != nullptr && WBCState == ECharacterState::ECS_Alive)
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
@@ -129,20 +126,8 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 	const bool actionValue = value.Get<bool>();
 	if(WBCState == ECharacterState::ECS_Alive)
 	{
-		if (actionValue == 1) 
-		{
-			if (Combat) 
-			{
-				Combat->FireButtonPressed(true);
-			}
-		}
-		else  
-		{
-			if (Combat)
-			{
-				Combat->FireButtonPressed(false);
-			}
-		}
+		if (actionValue == 1) {if (Combat) {Combat->FireButtonPressed(true);}}
+		else {if (Combat) {Combat->FireButtonPressed(false);}}
 	}
 }
 
@@ -152,6 +137,15 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 	{
 		Attributes->UpdateTimer();
 		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+
+		if (DmgIsBoosted) 
+		{
+			Attributes->UpdateItemEffectTimer();
+			if (Attributes->GetItemEffectTimer() < 0)
+			{
+				DmgIsBoosted = false;
+			}
+		}
 		if (WBCState == ECharacterState::ECS_Dead) 
 		{
 			Attributes->UpdateDeadTimer();
@@ -273,6 +267,21 @@ void AWhiteBloodCellCharacter::PlayFireMontage()
 	}
 }
 
+void AWhiteBloodCellCharacter::UseItem(EItemType item)
+{
+	if (item == EItemType::EIT_HealPack) 
+	{
+		Attributes->AddHealth(35);
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	}
+	else if (item == EItemType::EIT_DamageBoost)
+	{
+		DmgIsBoosted = true;
+		Attributes->ResetItemEffectTimer();
+		//Attributes->SetItemEffectStartTime(Attributes->GetTimeCountdown());
+	}
+}
+
 float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Attributes && HealthBarWidget && WBCState == ECharacterState::ECS_Alive)
@@ -285,7 +294,7 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 		{
 			WBCState = ECharacterState::ECS_Dead;
 			PlayDeathMaterial();
-			Attributes->SetDeadStartTime(Attributes->GetTimeCountdown());
+			//Attributes->SetDeadStartTime(Attributes->GetTimeCountdown());
 		}
 	}
 

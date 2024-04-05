@@ -74,11 +74,21 @@ bool UAttributeComponent::IsAlive()
 
 void UAttributeComponent::UpdateDeadTimer()
 {
-	 DeadTimer = FMath::Clamp(DeadTimer - 1, -1.f, 5);
+	 DeadTimer = FMath::Clamp(DeadTimer - 1, -1.f, DEATH_CD);
+}
+
+void UAttributeComponent::UpdateItemEffectTimer()
+{
+	ItemEffectTimer = FMath::Clamp(ItemEffectTimer - 1, -1.f, ITEM_EFFECT_TIME_LEN);
 }
 
 void UAttributeComponent::UpdateTimer()
 {
 	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);
+}
+
+void UAttributeComponent::AddHealth(int32 heal)
+{
+	Health = FMath::Clamp(Health + heal, 0.f, MaxHealth);
 }
 
