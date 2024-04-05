@@ -36,7 +36,6 @@ float ARBCCharacter::GetHealthPercent()
 void ARBCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -47,6 +46,11 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 		HealthBarWidget->SetHealthPercent(GetHealthPercent());
 	}
 
+	if (Health <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("RBCDie"));
+		RBCDie();
+	}
 	return DamageAmount;
 }
 

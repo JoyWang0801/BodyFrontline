@@ -4,23 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Items/Item.h"
-#include "Soul.generated.h"
+#include "Interfaces/GameEnums.h"
+#include "HealPack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class BODYFRONTLINE_API ASoul : public AItem
+class BODYFRONTLINE_API AHealPack : public AItem
 {
 	GENERATED_BODY()
 
 public:
-	ASoul();
+	FORCEINLINE EItemType GetType() { return Type; }
+	FORCEINLINE int32 GetAmount() { return Amount; }
 
 protected:
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 private:
-
-
+	EItemType Type = EItemType::EIT_HealPack;
+	int32 Amount = 35;
 };

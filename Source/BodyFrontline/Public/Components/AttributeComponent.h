@@ -7,6 +7,9 @@
 #include "Interfaces/GameEnums.h"
 #include "AttributeComponent.generated.h"
 
+#define DEATH_CD 5
+#define ITEM_EFFECT_TIME_LEN 5
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BODYFRONTLINE_API UAttributeComponent : public UActorComponent
 {
@@ -25,17 +28,22 @@ public:
 	int32 GetWaveCount();			// TODO - Will probably move to AI classes		
 	bool IsAlive();
 	void UpdateDeadTimer();
+	void UpdateItemEffectTimer();
 	void UpdateTimer();
+	void AddHealth(int32 heal);
 
 	FTimerHandle GameTimer;
 
 	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
-	FORCEINLINE void SetDeadStartTime(int32 time) { DeadStartTime = time; }
+	//FORCEINLINE void SetDeadStartTime(int32 time) { DeadStartTime = time; }
+	//FORCEINLINE void SetItemEffectStartTime(int32 time) { ItemEffectStartTime = time; }
 	FORCEINLINE void ResetHealth() { Health = MaxHealth; }
-	FORCEINLINE void ResetDeadTimer() { DeadTimer = 5; }
+	FORCEINLINE void ResetDeadTimer() { DeadTimer = DEATH_CD; }
 	FORCEINLINE int32 GetDeadTimer() { return DeadTimer; }
+	FORCEINLINE void ResetItemEffectTimer() { ItemEffectTimer = DEATH_CD; }
+	FORCEINLINE int32 GetItemEffectTimer() { return ItemEffectTimer; }
 
 protected:
 	// Called when the game starts
@@ -61,6 +69,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	EGameDifficulty GameDifficulty = EGameDifficulty::EGD_Easy;
 
-	int32 DeadTimer = 5;
-	int32 DeadStartTime = 0;
+	int32 DeadTimer = DEATH_CD;
+	//int32 DeadStartTime = 0;
+	int32 ItemEffectTimer = ITEM_EFFECT_TIME_LEN;
+	//int32 ItemEffectStartTime = 0;
 };

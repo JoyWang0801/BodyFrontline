@@ -7,8 +7,10 @@
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Weapon/Projectile.h"
 #include "Items/Soul.h"
+#include "Items/Item.h"
+#include "Items/HealPack.h"
+#include "Items/DamageBoost.h"
 #include "Characters/WhiteBloodCellCharacter.h"
 
 // Sets default values
@@ -30,7 +32,6 @@ AEnemy::AEnemy()
 	DeadWidget->SetVisibility(false);
 
 	this->Tags.Add(FName("Enemy"));
-
 }
 
 void AEnemy::BeginPlay()
@@ -59,23 +60,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 		if (!Attributes->IsAlive())
 		{
-			CurrentState = ECharacterState::ECS_Dead;
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			GetMesh()->SetVisibility(false);
-			SetLifeSpan(1.0f);
-			DeadWidget->SetVisibility(true);
-			HealthBarWidget->SetVisibility(false);
-
-			if (SoulClass)
-			{
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.Owner = GetOwner();
-				UWorld* World = GetWorld();
-				if (World)
-				{
-					ASoul* soul = World->SpawnActor<ASoul>(SoulClass, GetActorTransform());
-				}
-			}
+			Die();
 		}
 	}
 
@@ -102,5 +87,48 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	//}
 
 	return DamageAmount;
+}
+
+void AEnemy::Die()
+{
+	CurrentState = ECharacterState::ECS_Dead;
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetVisibility(false);
+	SetLifeSpan(0.5f);
+	DeadWidget->SetVisibility(true);
+	HealthBarWidget->SetVisibility(false);
+
+	DropRandom();
+}
+
+void AEnemy::DropRandom()
+{
+	UWorld* World = GetWorld();
+
+	if (ItemClasses.Num() > 0)
+	{
+		int32 RandomNumber = FMath::RandRange(0, ItemClasses.Num() - 1);
+		if (World)
+		{
+			if (RandomNumber == 0) 
+			{
+				World->SpawnActor<AHealPack>(ItemClasses[RandomNumber], GetActorTransform());
+			}
+			else if (RandomNumber == 1) 
+			{
+				World->SpawnActor<ADamageBoost>(ItemClasses[RandomNumber], GetActorTransform());
+			}
+		}
+	}
+	// Drop soul
+	if (SoulClass)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = GetOwner();
+		if (World)
+		{
+			ASoul* soul = World->SpawnActor<ASoul>(SoulClass, GetActorTransform());
+		}
+	}
 }
 

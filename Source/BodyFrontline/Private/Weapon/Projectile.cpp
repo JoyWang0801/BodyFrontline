@@ -63,10 +63,20 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 				UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 			}
 
+			AWhiteBloodCellCharacter* Character = Cast<AWhiteBloodCellCharacter>(GetOwner());
+			if (Character->IsDmgBoostUp())
+			{
+				CurrentDamage = BaseDamage * 1.25;
+			}
+			else 
+			{
+				CurrentDamage = BaseDamage;
+			}
 
+			UE_LOG(LogTemp, Warning, TEXT("Dmg: %f."), CurrentDamage);
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
-				Damage,
+				CurrentDamage,
 				GetInstigator()->GetController(),
 				this,
 				UDamageType::StaticClass()
