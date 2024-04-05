@@ -70,10 +70,9 @@ void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 				UDamageType::StaticClass()
 			);
 
-			Destroy();
 		}
 	}
-
+	Destroy();
 }
 
 // Called every frame
