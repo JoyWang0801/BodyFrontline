@@ -24,9 +24,16 @@ void ABase::Tick(float DeltaTime)
 float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
-	UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
-
+	//UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+	 
 	return 0.0f;
+}
+
+void ABase::UpdateHealth()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Base health++"));
+
+	Health = FMath::Clamp(Health + 1.f, 0.f, MaxHealth);
 }
 
 void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -49,6 +56,13 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 			}
 		}
 	}
+}
+
+void ABase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetWorldTimerManager().SetTimer(HealthTimer, this, &ABase::UpdateHealth, 1.0f, true);
 }
 
 float ABase::GetHealthPercent()

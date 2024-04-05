@@ -37,8 +37,6 @@ public:
 	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
-	//FORCEINLINE void SetDeadStartTime(int32 time) { DeadStartTime = time; }
-	//FORCEINLINE void SetItemEffectStartTime(int32 time) { ItemEffectStartTime = time; }
 	FORCEINLINE void ResetHealth() { Health = MaxHealth; }
 	FORCEINLINE void ResetDeadTimer() { DeadTimer = DEATH_CD; }
 	FORCEINLINE int32 GetDeadTimer() { return DeadTimer; }
@@ -70,7 +68,5 @@ private:
 	EGameDifficulty GameDifficulty = EGameDifficulty::EGD_Easy;
 
 	int32 DeadTimer = DEATH_CD;
-	//int32 DeadStartTime = 0;
 	int32 ItemEffectTimer = ITEM_EFFECT_TIME_LEN;
-	//int32 ItemEffectStartTime = 0;
 };
