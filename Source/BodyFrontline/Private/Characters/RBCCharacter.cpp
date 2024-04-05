@@ -47,6 +47,11 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 		HealthBarWidget->SetHealthPercent(GetHealthPercent());
 	}
 
+	if (Health <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("RBCDie"));
+		RBCDie();
+	}
 	return DamageAmount;
 }
 

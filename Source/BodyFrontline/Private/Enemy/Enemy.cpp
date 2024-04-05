@@ -32,7 +32,6 @@ AEnemy::AEnemy()
 	DeadWidget->SetVisibility(false);
 
 	this->Tags.Add(FName("Enemy"));
-
 }
 
 void AEnemy::BeginPlay()
@@ -95,7 +94,7 @@ void AEnemy::Die()
 	CurrentState = ECharacterState::ECS_Dead;
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetVisibility(false);
-	SetLifeSpan(1.0f);
+	SetLifeSpan(0.5f);
 	DeadWidget->SetVisibility(true);
 	HealthBarWidget->SetVisibility(false);
 

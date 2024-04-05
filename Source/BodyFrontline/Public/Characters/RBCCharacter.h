@@ -19,6 +19,9 @@ public:
 	void HoldSoul(class ASoul* SoulToHold);
 	FORCEINLINE ASoul* GetHoldingSoul() { return HoldedSoul; }
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+	void RBCDie();
+
 protected:
 	virtual void BeginPlay() override;
 
