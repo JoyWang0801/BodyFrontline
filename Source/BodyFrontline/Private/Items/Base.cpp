@@ -21,26 +21,37 @@ void ABase::Tick(float DeltaTime)
 	SetActorRotation(FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw + 0.25, CurrentRotation.Roll));
 }
 
+float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+
+	return 0.0f;
+}
+
 void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s overlap."), *OverlappedComponent->GetName());
-
-
-	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-	if (RBC)
+	if (OtherActor->ActorHasTag(FName("RBC")))
 	{
-		//RBC->SetInBaseArea(true);
-		ASoul* Holding = RBC->GetHoldingSoul();
-		if(Holding)
+		ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+		if (RBC)
 		{
-			Holding->DisableSphereCollision();
-			AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-			WBC->AddSouls(Holding);
-			//DisableSphereCollision();
-			SpawnPickupSystem();
-			SpawnPickupSound();
+			ASoul* Holding = RBC->GetHoldingSoul();
+			if (Holding)
+			{
+				Holding->DisableSphereCollision();
+				AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+				WBC->AddSouls(Holding);
+				SpawnPickupSystem();
+				SpawnPickupSound();
 
-			Holding->Destroy();
+				Holding->Destroy();
+			}
 		}
 	}
+}
+
+float ABase::GetHealthPercent()
+{
+	return Health / MaxHealth;
 }
