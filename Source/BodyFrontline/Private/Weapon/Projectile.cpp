@@ -47,6 +47,7 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
 	if (Hit.GetActor()) 
 	{
 		// No ally damage
@@ -84,6 +85,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 		}
 	}
+
 	Destroy();
 }
 
