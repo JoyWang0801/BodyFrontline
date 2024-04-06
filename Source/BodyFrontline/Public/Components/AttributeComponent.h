@@ -69,4 +69,6 @@ private:
 
 	int32 DeadTimer = DEATH_CD;
 	int32 ItemEffectTimer = ITEM_EFFECT_TIME_LEN;
+
+	class ABase* Base;
 };

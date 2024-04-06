@@ -5,12 +5,15 @@
 #include "Characters/RBCCharacter.h"
 #include "Items/Soul.h"
 #include "Characters/WhiteBloodCellCharacter.h"
+#include "HUD/HealthBarComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ABase::ABase()
 {
-
 	Tags.Add(FName("Base"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
+	HealthBarWidget->SetHealthPercent(GetHealthPercent());
 }
 
 void ABase::Tick(float DeltaTime)
@@ -25,15 +28,25 @@ float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 {
 	Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
 	//UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
-	 
+	UpdateHealthBar();
+
 	return 0.0f;
+}
+
+void ABase::UpdateHealthBar()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetHealthPercent(GetHealthPercent());
+	}
 }
 
 void ABase::UpdateHealth()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Base health++"));
+	//UE_LOG(LogTemp, Warning, TEXT("Base health++"));
 
 	Health = FMath::Clamp(Health + 1.f, 0.f, MaxHealth);
+	UpdateHealthBar();
 }
 
 void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -52,6 +65,7 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 				SpawnPickupSystem();
 				SpawnPickupSound();
 
+				Health += OXYGEN_COUNT;
 				Holding->Destroy();
 			}
 		}

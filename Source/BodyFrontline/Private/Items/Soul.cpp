@@ -17,6 +17,7 @@ void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
 	if (RBC)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("RBC overlap with soul"));
 		RBC->HoldSoul(this);
 		DisableSphereCollision();
 	}

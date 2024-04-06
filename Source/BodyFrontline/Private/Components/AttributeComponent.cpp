@@ -6,6 +6,7 @@
 #include "Interfaces/GameEnums.h"
 #include "Interfaces/BodyFrontlineGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Items/Base.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values for this component's properties
@@ -26,15 +27,24 @@ void UAttributeComponent::BeginPlay()
 		GameDifficulty = GameInstance->Diffculty;
 	}
 	
+	UWorld* world = GetWorld();
+	if (world)
+	{
+		TArray<AActor*> TempActors;
+		UGameplayStatics::GetAllActorsOfClass(world, AActor::StaticClass(), TempActors);
+		for (AActor* Actor : TempActors)
+		{
+			if (Actor && Actor->ActorHasTag(FName("Base")))
+			{
+				Base = Cast<ABase>(Actor);
+			}
+		}
+	}
 }
 
-
-// Called every frame
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void UAttributeComponent::ReceiveDamage(float Damage)

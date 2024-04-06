@@ -59,7 +59,6 @@ void ARBCCharacter::HoldSoul(ASoul* SoulToHold)
 	if (SoulToHold == nullptr) return;
 
 	HoldedSoul = SoulToHold;
-	// HoldedSoul->SetWeaponState(EWeaponState::EWS_Equipped);
 	const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSoulSocket"));
 	if (HandSocket)
 	{
