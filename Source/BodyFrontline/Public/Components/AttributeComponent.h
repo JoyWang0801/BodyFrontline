@@ -31,10 +31,10 @@ public:
 	void UpdateItemEffectTimer();
 	void UpdateTimer();
 	void AddHealth(int32 heal);
+	void IncreaseSoul(int32 Number);
 
 	FTimerHandle GameTimer;
 
-	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
 	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
 	FORCEINLINE void ResetHealth() { Health = MaxHealth; }

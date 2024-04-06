@@ -7,6 +7,7 @@
 #include "Interfaces/BodyFrontlineGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Items/Base.h"
+#include "Characters/RBCCharacter.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values for this component's properties
@@ -96,5 +97,14 @@ void UAttributeComponent::UpdateTimer()
 void UAttributeComponent::AddHealth(int32 heal)
 {
 	Health = FMath::Clamp(Health + heal, 0.f, MaxHealth);
+}
+
+void UAttributeComponent::IncreaseSoul(int32 Number)
+{  
+	SoulsCount += Number; 
+	if (SoulsCount == 5) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Time to spawn a oxygen"));
+	}
 }
 

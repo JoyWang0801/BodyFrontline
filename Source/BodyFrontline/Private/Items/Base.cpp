@@ -13,7 +13,7 @@ ABase::ABase()
 	Tags.Add(FName("Base"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
-	HealthBarWidget->SetHealthPercent(GetHealthPercent());
+	HealthBarWidget->SetHealthPercent(.3f);
 }
 
 void ABase::Tick(float DeltaTime)
