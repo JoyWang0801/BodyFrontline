@@ -27,7 +27,7 @@ void ABase::Tick(float DeltaTime)
 float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
-	//UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+	UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
 	UpdateHealthBar();
 
 	return 0.0f;

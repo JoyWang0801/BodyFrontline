@@ -4,6 +4,7 @@
 #include "Characters/RBCCharacter.h"
 #include "HUD/HealthBarComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Kismet/GameplayStatics.h"
 #include "Items/Soul.h"
 
 
@@ -14,6 +15,7 @@ ARBCCharacter::ARBCCharacter()
 
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+	HealthBarWidget->SetVisibility(false);
 
 	this->Tags.Add(FName("RBC"));
 }
@@ -42,8 +44,17 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 {
 	if (HealthBarWidget)
 	{
+		HealthBarWidget->SetVisibility(true);
 		ReceiveDamage(DamageAmount);
 		HealthBarWidget->SetHealthPercent(GetHealthPercent());
+
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+			{
+				HealthBarWidget->SetVisibility(false);
+
+			}, 3, false);
+
 	}
 
 	if (Health <= 0)

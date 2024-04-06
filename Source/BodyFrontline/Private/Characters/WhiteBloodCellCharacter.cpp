@@ -138,6 +138,7 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 		Attributes->UpdateTimer();
 		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
 
+		// TODO - change to ftimehandler
 		if (DmgIsBoosted) 
 		{
 			Attributes->UpdateItemEffectTimer();
@@ -172,6 +173,7 @@ void AWhiteBloodCellCharacter::Reset()
 		Attributes->ResetDeadTimer();
 		GetMesh()->SetMaterial(0, WBCMaterial);
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+		HealthBarWidget->SetVisibility(true);
 	}
 }
 
@@ -292,6 +294,7 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 		if (!Attributes->IsAlive())
 		{
 			WBCState = ECharacterState::ECS_Dead;
+			HealthBarWidget->SetVisibility(false);
 			PlayDeathMaterial();
 		}
 	}
