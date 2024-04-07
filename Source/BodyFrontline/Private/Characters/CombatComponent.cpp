@@ -31,7 +31,8 @@ void UCombatComponent::FireButtonPressed(bool bIsPressed)
 
 void UCombatComponent::TraceToCrosshairs(FHitResult& HitResult)
 {
-	FVector Head = Character->GetMesh()->GetSocketLocation("Head");
+	//FVector Head = Character->GetMesh()->GetSocketLocation("Head");
+	FVector Head = Character->GetMesh()->GetSocketLocation("RightHandSocket");
 	GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		Head,

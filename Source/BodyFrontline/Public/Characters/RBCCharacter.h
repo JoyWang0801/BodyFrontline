@@ -15,9 +15,12 @@ public:
 	ARBCCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
+	void DeliverSoul();
 	void HoldSoul(class ASoul* SoulToHold);
 	FORCEINLINE ASoul* GetHoldingSoul() { return HoldedSoul; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsHoldingSoul() { return IsHolding; }
+	FORCEINLINE void SetIsHoldingSoul(bool b) { IsHolding = b; }
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
 	void RBCDie();
@@ -45,4 +48,5 @@ private:
 	float Health = 100.f;
 
 	ASoul* HoldedSoul;
+	bool IsHolding = false;
 };

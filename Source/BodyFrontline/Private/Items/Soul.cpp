@@ -15,37 +15,10 @@ ASoul::ASoul()
 void ASoul::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-	if (RBC)
+	if (RBC && !RBC->GetIsHoldingSoul() && !IsHoldedByRBC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("RBC overlap with soul"));
-		RBC->HoldSoul(this);
+		IsHoldedByRBC = true;
 		DisableSphereCollision();
+		RBC->HoldSoul(this);
 	}
-
-	// WBC or Enemy, will change to enemy only
-	//IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
-	//if (PickupInterface)
-	//{
-	//	PickupInterface->AddSouls(this);
-
-	//	SpawnPickupSystem();
-	//	SpawnPickupSound();
-
-	//	Destroy();
-	//}
-	//else // RBC
-	//{
-	//	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-	//	if (RBC)
-	//	{
-	//		RBC->HoldSoul(this);
-	//		DisableSphereCollision();
-	//		//SpawnPickupSystem();
-	//		//SpawnPickupSound();
-
-	//		//Destroy();
-	//	}
-	//}
-
-
 }

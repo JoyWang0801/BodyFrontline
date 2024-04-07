@@ -46,3 +46,11 @@ void UPlayerOverlay::SetCD(int32 cd)
 		}
 	}
 }
+
+void UPlayerOverlay::SetRBCCount(int32 amount)
+{
+	if (RBCCount)
+	{
+		RBCCount->SetText(FText::FromString(FString::Printf(TEXT("%d"), amount)));
+	}
+}

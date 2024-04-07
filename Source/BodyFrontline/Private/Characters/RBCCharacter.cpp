@@ -15,7 +15,6 @@ ARBCCharacter::ARBCCharacter()
 
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
-	HealthBarWidget->SetVisibility(false);
 
 	this->Tags.Add(FName("RBC"));
 }
@@ -23,6 +22,12 @@ ARBCCharacter::ARBCCharacter()
 void ARBCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);
+	}
+
 }
 
 void ARBCCharacter::ReceiveDamage(float Damage)
@@ -54,29 +59,44 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 				HealthBarWidget->SetVisibility(false);
 
 			}, 3, false);
-
 	}
 
 	if (Health <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("RBCDie"));
 		RBCDie();
 	}
 	return DamageAmount;
+}
+
+void ARBCCharacter::DeliverSoul()
+{
+	if (IsHolding) 
+	{
+		HoldedSoul->Destroy();
+		HoldedSoul = nullptr;
+		IsHolding = false;
+	}
 }
 
 void ARBCCharacter::HoldSoul(ASoul* SoulToHold)
 {
 	if (SoulToHold == nullptr) return;
 
-	HoldedSoul = SoulToHold;
-	const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSoulSocket"));
-	if (HandSocket)
+	if (!IsHolding)
 	{
-		HandSocket->AttachActor(HoldedSoul, GetMesh());
+		UE_LOG(LogTemp, Warning, TEXT("RBC Pick Up a soul"));
+
+		HoldedSoul = SoulToHold;
+		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSoulSocket"));
+		if (HandSocket)
+		{
+			HandSocket->AttachActor(HoldedSoul, GetMesh());
+		}
+
+		IsHolding = true;
+		HoldedSoul->SetOwner(this);
+		HoldedSoul->SetInstigator(this);
+		HoldedSoul->DisableSphereCollision();
 	}
-	HoldedSoul->SetOwner(this);
-	HoldedSoul->SetInstigator(this);
-	HoldedSoul->DisableSphereCollision();
 }
 

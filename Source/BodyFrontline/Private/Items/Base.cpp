@@ -26,9 +26,12 @@ void ABase::Tick(float DeltaTime)
 
 float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
-	UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
-	UpdateHealthBar();
+	if (EventInstigator->GetPawn()->ActorHasTag(FName("Enemy")))
+	{
+		Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
+		// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+		UpdateHealthBar();
+	}
 
 	return 0.0f;
 }
@@ -54,7 +57,7 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	if (OtherActor->ActorHasTag(FName("RBC")))
 	{
 		ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-		if (RBC)
+		if (RBC && RBC->GetIsHoldingSoul())
 		{
 			ASoul* Holding = RBC->GetHoldingSoul();
 			if (Holding)
@@ -66,7 +69,8 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 				SpawnPickupSound();
 
 				Health += OXYGEN_COUNT;
-				Holding->Destroy();
+				RBC->DeliverSoul();
+				//Holding->Destroy();
 			}
 		}
 	}

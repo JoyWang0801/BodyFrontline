@@ -16,11 +16,12 @@ class BODYFRONTLINE_API ASoul : public AItem
 
 public:
 	ASoul();
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsHoldedByRBC() { return IsHoldedByRBC; }
 
 protected:
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 private:
-
-
+	bool IsHoldedByRBC = false;
 };

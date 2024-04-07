@@ -7,8 +7,11 @@
 #include "Interfaces/BodyFrontlineGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Items/Base.h"
+#include "Characters/WhiteBloodCellCharacter.h"
 #include "Characters/RBCCharacter.h"
 #include "Components/WidgetComponent.h"
+#include "HUD/BodyFrontlineHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 // Sets default values for this component's properties
 UAttributeComponent::UAttributeComponent()
@@ -38,7 +41,24 @@ void UAttributeComponent::BeginPlay()
 			if (Actor && Actor->ActorHasTag(FName("Base")))
 			{
 				Base = Cast<ABase>(Actor);
+				break;
 			}
+		}
+	}
+}
+
+void UAttributeComponent::InitOverlay(APlayerController* PlayerController)
+{
+	ABodyFrontlineHUD* BF_HUD = Cast<ABodyFrontlineHUD>(PlayerController->GetHUD());
+	if (BF_HUD)
+	{
+		PlayerOverlay = BF_HUD->GetSlashOverlay();
+		if (PlayerOverlay)
+		{
+			PlayerOverlay->SetWave(GetWaveCount());
+			PlayerOverlay->SetTimeCount(GetTimeCountdown());
+			PlayerOverlay->SetSouls(GetSoulsCount());
+			PlayerOverlay->SetRBCCount(GetRBCCount());
 		}
 	}
 }
@@ -60,7 +80,7 @@ float UAttributeComponent::GetHealthPercent()
 
 int32 UAttributeComponent::GetSoulsCount()
 {
-	return SoulsCount;
+	return TotalSoulsCount;
 }
 
 
@@ -82,6 +102,8 @@ bool UAttributeComponent::IsAlive()
 void UAttributeComponent::UpdateDeadTimer()
 {
 	 DeadTimer = FMath::Clamp(DeadTimer - 1, -1.f, DEATH_CD);
+
+	 PlayerOverlay->SetCD(GetDeadTimer());
 }
 
 void UAttributeComponent::UpdateItemEffectTimer()
@@ -92,6 +114,14 @@ void UAttributeComponent::UpdateItemEffectTimer()
 void UAttributeComponent::UpdateTimer()
 {
 	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);
+	PlayerOverlay->SetTimeCount(GetTimeCountdown());
+}
+
+void UAttributeComponent::UpdateRBCCount(int32 amount)
+{
+	RBCCount = FMath::Clamp(RBCCount + amount, 0, MAX_RBC);
+	PlayerOverlay->SetRBCCount(GetRBCCount());
+
 }
 
 void UAttributeComponent::AddHealth(int32 heal)
@@ -101,10 +131,22 @@ void UAttributeComponent::AddHealth(int32 heal)
 
 void UAttributeComponent::IncreaseSoul(int32 Number)
 {  
-	SoulsCount += Number; 
-	if (SoulsCount == 5) 
+	TotalSoulsCount += Number; 
+	RBCGenerateSoulCount += Number;
+	if (RBCGenerateSoulCount % RBCGenerateAmount == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Time to spawn a oxygen"));
+		UWorld* World = GetWorld();
+		if (World && Base && RBCCount < MAX_RBC)
+		{
+			World->SpawnActor<ARBCCharacter>(RBCClass, Base->GetActorTransform());
+			RBCCount++;
+			PlayerOverlay->SetRBCCount(GetRBCCount());
+			RBCGenerateSoulCount = 0;
+			//UE_LOG(LogTemp, Warning, TEXT("instigator: %s owner: %s"), *SpawnParams.Owner->GetName(), *SpawnParams.Instigator->GetName());
+			RBCGenerateAmount++;
+		}
 	}
+
+	PlayerOverlay->SetSouls(GetSoulsCount());
 }
 

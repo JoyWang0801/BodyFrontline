@@ -18,8 +18,7 @@ AEnemy::AEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	USkeletalMeshComponent* Mesh = GetMesh();
-	Mesh->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	//GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);

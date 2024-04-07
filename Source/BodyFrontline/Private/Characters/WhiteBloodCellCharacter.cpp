@@ -20,7 +20,6 @@
 #include "Items/Item.h"
 #include "HUD/HealthBarComponent.h"
 #include "HUD/BodyFrontlineHUD.h"
-#include "HUD/PlayerOverlay.h"
 #include "Materials/MaterialInterface.h"
 
 // Sets default values
@@ -40,6 +39,7 @@ AWhiteBloodCellCharacter::AWhiteBloodCellCharacter()
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	Attributes->SetCharacter(this);
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
@@ -61,8 +61,6 @@ void AWhiteBloodCellCharacter::BeginPlay()
 		}
 
 		PlayerController->bShowMouseCursor = true;
-
-		InitOverlay();
 	}
 
 	PlayerCameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
@@ -70,23 +68,25 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	if (Attributes) 
 	{
 		GetWorldTimerManager().SetTimer(Attributes->GameTimer, this, &AWhiteBloodCellCharacter::UpdateTimerAttribute, 1.0f, true);
+		Attributes->InitOverlay(PlayerController);
+
 	}
 }
 
-void AWhiteBloodCellCharacter::InitOverlay()
-{
-	ABodyFrontlineHUD* BF_HUD = Cast<ABodyFrontlineHUD>(PlayerController->GetHUD());
-	if (BF_HUD)
-	{
-		PlayerOverlay = BF_HUD->GetSlashOverlay();
-		if (PlayerOverlay)
-		{
-			PlayerOverlay->SetWave(Attributes->GetWaveCount());
-			PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
-			PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
-		}
-	}
-}
+//void AWhiteBloodCellCharacter::InitOverlay()
+//{
+//	ABodyFrontlineHUD* BF_HUD = Cast<ABodyFrontlineHUD>(PlayerController->GetHUD());
+//	if (BF_HUD)
+//	{
+//		PlayerOverlay = BF_HUD->GetSlashOverlay();
+//		if (PlayerOverlay)
+//		{
+//			PlayerOverlay->SetWave(Attributes->GetWaveCount());
+//			PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+//			PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
+//		}
+//	}
+//}
 
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 {
@@ -133,10 +133,10 @@ void AWhiteBloodCellCharacter::FireButton(const FInputActionValue& value)
 
 void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 {
-	if (Attributes && PlayerOverlay)
+	if (Attributes && Attributes->PlayerOverlay)
 	{
 		Attributes->UpdateTimer();
-		PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
+		//Attributes->PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
 
 		// TODO - change to ftimehandler
 		if (DmgIsBoosted) 
@@ -150,7 +150,7 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 		if (WBCState == ECharacterState::ECS_Dead) 
 		{
 			Attributes->UpdateDeadTimer();
-			PlayerOverlay->SetCD(Attributes->GetDeadTimer());
+			//PlayerOverlay->SetCD(Attributes->GetDeadTimer());
 			if (Attributes->GetDeadTimer() < 0) 
 			{
 				Reset();
@@ -283,6 +283,14 @@ void AWhiteBloodCellCharacter::UseItem(EItemType item)
 	}
 }
 
+void AWhiteBloodCellCharacter::RBCDie()
+{
+	if (Attributes) 
+	{
+		Attributes->UpdateRBCCount(-1);
+	}
+}
+
 float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Attributes && HealthBarWidget && WBCState == ECharacterState::ECS_Alive)
@@ -310,6 +318,5 @@ void AWhiteBloodCellCharacter::SetOverlappingItem(AItem* Item)
 void AWhiteBloodCellCharacter::AddSouls(ASoul* Soul)
 {
 	Attributes->IncreaseSoul(1);
-	PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
 }
 

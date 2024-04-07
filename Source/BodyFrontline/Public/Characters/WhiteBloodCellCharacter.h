@@ -45,6 +45,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
 	void PlayDeathMaterial();
 
+	UFUNCTION(BlueprintCallable)
+	void RBCDie();
 
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
@@ -53,7 +55,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void InitOverlay();
+	//void InitOverlay();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* WhiteBloodCellMappingContext;
@@ -106,8 +108,8 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 
-	UPROPERTY()
-	UPlayerOverlay* PlayerOverlay;
+	//UPROPERTY()
+	//UPlayerOverlay* PlayerOverlay;
 
 	UPROPERTY(EditDefaultsOnly)
 	class UMaterialInterface* WBCMaterial;

@@ -19,6 +19,7 @@ public:
 	void SetTimeCount(int32 Time);
 	void SetWave(int32 Wav);
 	void SetCD(int32 cd);
+	void SetRBCCount(int32 amount);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -32,4 +33,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* CD;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* RBCCount;
 };

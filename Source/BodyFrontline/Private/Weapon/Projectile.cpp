@@ -47,7 +47,7 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
 	if (Hit.GetActor()) 
 	{
 		// No ally damage
@@ -67,14 +67,13 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			AWhiteBloodCellCharacter* Character = Cast<AWhiteBloodCellCharacter>(GetOwner());
 			if (Character->IsDmgBoostUp())
 			{
-				CurrentDamage = BaseDamage * 1.25;
+				CurrentDamage = CurrentDamage * 1.25;
 			}
 			else 
 			{
 				CurrentDamage = BaseDamage;
 			}
 
-			UE_LOG(LogTemp, Warning, TEXT("Dmg: %f."), CurrentDamage);
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
 				CurrentDamage,
