@@ -69,7 +69,6 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	{
 		GetWorldTimerManager().SetTimer(Attributes->GameTimer, this, &AWhiteBloodCellCharacter::UpdateTimerAttribute, 1.0f, true);
 		Attributes->InitOverlay(PlayerController);
-
 	}
 }
 
