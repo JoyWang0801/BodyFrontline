@@ -6,7 +6,7 @@
 #include "Items/Item.h"
 #include "Base.generated.h"
 
-#define OXYGEN_COUNT 5
+#define OXYGEN_WEIGHT 5
 
 UCLASS()
 class BODYFRONTLINE_API ABase : public AItem

@@ -42,6 +42,11 @@ void ABase::UpdateHealthBar()
 	{
 		HealthBarWidget->SetHealthPercent(GetHealthPercent());
 	}
+	if (Health == MaxHealth) 
+	{
+		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+		WBC->GameEnd();
+	}
 }
 
 void ABase::UpdateHealth()
@@ -68,9 +73,8 @@ void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 				SpawnPickupSystem();
 				SpawnPickupSound();
 
-				Health += OXYGEN_COUNT;
+				Health += OXYGEN_WEIGHT;
 				RBC->DeliverSoul();
-				//Holding->Destroy();
 			}
 		}
 	}

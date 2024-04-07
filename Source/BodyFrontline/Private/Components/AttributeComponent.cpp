@@ -139,10 +139,9 @@ void UAttributeComponent::IncreaseSoul(int32 Number)
 		if (World && Base && RBCCount < MAX_RBC)
 		{
 			World->SpawnActor<ARBCCharacter>(RBCClass, Base->GetActorTransform());
-			RBCCount++;
 			PlayerOverlay->SetRBCCount(GetRBCCount());
+			RBCCount++;
 			RBCGenerateSoulCount = 0;
-			//UE_LOG(LogTemp, Warning, TEXT("instigator: %s owner: %s"), *SpawnParams.Owner->GetName(), *SpawnParams.Instigator->GetName());
 			RBCGenerateAmount++;
 		}
 	}

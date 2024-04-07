@@ -158,10 +158,14 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 		}
 		if (Attributes->GetTimeCountdown() == 0)
 		{
-			// UGameplayStatics::SetGamePaused(this, true);
-			UGameplayStatics::OpenLevel(this, FName("GameEnd"));
+			GameEnd();
 		}
 	}
+}
+
+void AWhiteBloodCellCharacter::GameEnd()
+{
+	UGameplayStatics::OpenLevel(this, FName("GameEnd"));
 }
 
 void AWhiteBloodCellCharacter::Reset()
