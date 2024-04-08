@@ -45,11 +45,14 @@ public:
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
 	FORCEINLINE void ResetHealth() { Health = MaxHealth; }
 	FORCEINLINE void ResetDeadTimer() { DeadTimer = DEATH_CD; }
-	FORCEINLINE int32 GetDeadTimer() { return DeadTimer; }
-	FORCEINLINE int32 GetRBCCount () { return RBCCount; }
+	FORCEINLINE int32 GetDeadTimer() const { return DeadTimer; }
+	FORCEINLINE int32 GetRBCCount () const { return RBCCount; }
 	FORCEINLINE void ResetItemEffectTimer() { ItemEffectTimer = DEATH_CD; }
-	FORCEINLINE int32 GetItemEffectTimer() { return ItemEffectTimer; }
+	FORCEINLINE int32 GetItemEffectTimer() const { return ItemEffectTimer; }
 	FORCEINLINE void SetCharacter(class AWhiteBloodCellCharacter* c) { Character = c; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE EGameDifficulty GetDifficulty() const { return GameDifficulty; }
 
 protected:
 	// Called when the game starts

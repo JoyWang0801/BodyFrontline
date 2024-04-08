@@ -49,8 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RBCDie();
 
-	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
-	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
+	UPROPERTY(VisibleAnywhere)
+	class UAttributeComponent* Attributes;
 
 protected:
 	// Called when the game starts or when spawned
@@ -101,9 +101,6 @@ private:
 	class UAnimMontage* FireWeaponMontage;
 
 	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
-
-	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
 	UPROPERTY(VisibleInstanceOnly)
@@ -116,4 +113,9 @@ private:
 	class UMaterialInterface* WBCMaterial;
 
 	bool DmgIsBoosted = false;
+
+public:
+	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
+	//FORCEINLINE EGameDifficulty GetGameDifficulty() const { return Attributes->GetDifficulty(); }
 };
