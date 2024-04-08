@@ -53,7 +53,7 @@ void ABase::UpdateHealth()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Base health++"));
 
-	Health = FMath::Clamp(Health + 1.f, 0.f, MaxHealth);
+	//Health = FMath::Clamp(Health + 1.f, 0.f, MaxHealth);
 	UpdateHealthBar();
 }
 
