@@ -24,9 +24,9 @@ enum class EItemType : uint8
 };
 
 UENUM(BlueprintType)
-enum class EEnemyState : uint8
+enum class EVirusState : uint8
 {
-	EES_Chasing_Player UMETA(DisplayName = "Chasing Player"),
-	EES_Attacking_Base UMETA(DisplayName = "Attacking Base"),
-	EES_Attacking_RBC UMETA(DisplayName = "Attacking RBC")
+	EVS_Chasing_Player UMETA(DisplayName = "Chasing Player"),
+	EVS_Attacking_Base UMETA(DisplayName = "Attacking Base"),
+	EVS_Attacking_RBC UMETA(DisplayName = "Attacking RBC")
 };
