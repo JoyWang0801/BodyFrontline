@@ -130,6 +130,11 @@ void UAttributeComponent::UpdateRBCCount(int32 amount)
 {
 	RBCCount = FMath::Clamp(RBCCount + amount, 0, MAX_RBC);
 	PlayerOverlay->SetRBCCount(GetRBCCount());
+
+	if (RBCCount == 0)
+	{
+		UGameplayStatics::OpenLevel(this, FName("GameEnd"));
+	}
 }
 
 void UAttributeComponent::AddHealth(int32 heal)
