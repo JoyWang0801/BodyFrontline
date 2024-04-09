@@ -121,7 +121,6 @@ void UAttributeComponent::UpdateRBCCount(int32 amount)
 {
 	RBCCount = FMath::Clamp(RBCCount + amount, 0, MAX_RBC);
 	PlayerOverlay->SetRBCCount(GetRBCCount());
-
 }
 
 void UAttributeComponent::AddHealth(int32 heal)
@@ -139,8 +138,8 @@ void UAttributeComponent::IncreaseSoul(int32 Number)
 		if (World && Base && RBCCount < MAX_RBC)
 		{
 			World->SpawnActor<ARBCCharacter>(RBCClass, Base->GetActorTransform());
-			PlayerOverlay->SetRBCCount(GetRBCCount());
 			RBCCount++;
+			PlayerOverlay->SetRBCCount(GetRBCCount());
 			RBCGenerateSoulCount = 0;
 			RBCGenerateAmount++;
 		}

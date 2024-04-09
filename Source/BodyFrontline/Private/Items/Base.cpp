@@ -26,10 +26,11 @@ void ABase::Tick(float DeltaTime)
 
 float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (EventInstigator->GetPawn()->ActorHasTag(FName("Enemy")))
+	 UE_LOG(LogTemp, Warning, TEXT("%s."), *DamageCauser->GetInstigator()->GetName());
+	if (DamageCauser->GetInstigator()->ActorHasTag(FName("Enemy")))
 	{
 		Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
-		// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+	//	// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
 		UpdateHealthBar();
 	}
 
