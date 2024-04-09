@@ -22,3 +22,11 @@ enum class EItemType : uint8
 	EIT_HealPack UMETA(DisplayName = "HealPack"),
 	EIT_DamageBoost UMETA(DisplayName = "DamageBoost")
 };
+
+UENUM(BlueprintType)
+enum class EEnemyState : uint8
+{
+	EES_Chasing_Player UMETA(DisplayName = "Chasing Player"),
+	EES_Attacking_Base UMETA(DisplayName = "Attacking Base"),
+	EES_Attacking_RBC UMETA(DisplayName = "Attacking RBC")
+};

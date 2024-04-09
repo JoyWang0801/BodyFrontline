@@ -23,6 +23,9 @@ public:
 
 	void DropRandom();
 
+	UPROPERTY(BlueprintReadWrite)
+	EEnemyState EnemyState = EEnemyState::EES_Attacking_Base;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
