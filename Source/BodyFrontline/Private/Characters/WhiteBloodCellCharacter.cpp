@@ -294,6 +294,21 @@ void AWhiteBloodCellCharacter::RBCDie()
 	}
 }
 
+float AWhiteBloodCellCharacter::HealthPercent()
+{
+	return Attributes->GetHealthPercent();
+}
+
+int32 AWhiteBloodCellCharacter::WaveNumber()
+{
+	return Attributes->GetWaveCount();
+}
+
+int32 AWhiteBloodCellCharacter::RBCCount()
+{
+	return Attributes->GetRBCCount();
+}
+
 float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Attributes && HealthBarWidget && WBCState == ECharacterState::ECS_Alive)

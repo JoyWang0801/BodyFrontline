@@ -49,8 +49,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RBCDie();
 
-	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
+	UFUNCTION(BlueprintCallable)
+	float HealthPercent();
+	UFUNCTION(BlueprintCallable)
+	int32 WaveNumber();
+	UFUNCTION(BlueprintCallable)
+	int32 RBCCount();
 
 protected:
 	// Called when the game starts or when spawned
@@ -94,6 +98,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
 
+	UPROPERTY(VisibleAnywhere)
+	class UAttributeComponent* Attributes;
+
 	const APlayerCameraManager* PlayerCameraManager;
 	APlayerController* PlayerController;
 
@@ -117,5 +124,6 @@ private:
 public:
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
-	//FORCEINLINE EGameDifficulty GetGameDifficulty() const { return Attributes->GetDifficulty(); }
+
+
 };
