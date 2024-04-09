@@ -33,6 +33,10 @@ float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	//	// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
 		UpdateHealthBar();
 	}
+	if (Health == 0)
+	{
+		UGameplayStatics::OpenLevel(this, FName("GameEnd"));
+	}
 
 	return 0.0f;
 }
