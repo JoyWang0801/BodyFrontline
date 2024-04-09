@@ -63,6 +63,15 @@ void UAttributeComponent::InitOverlay(APlayerController* PlayerController)
 	}
 }
 
+void UAttributeComponent::UpdateWave()
+{
+	WaveCount++; 
+	if (PlayerOverlay)
+	{
+		PlayerOverlay->SetWave(GetWaveCount());
+	}
+}
+
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

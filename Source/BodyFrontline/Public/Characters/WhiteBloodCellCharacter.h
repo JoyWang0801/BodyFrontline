@@ -55,6 +55,8 @@ public:
 	int32 WaveNumber();
 	UFUNCTION(BlueprintCallable)
 	int32 RBCCount();
+	UFUNCTION(BlueprintCallable)
+	void UpdateWaveNumber();
 
 protected:
 	// Called when the game starts or when spawned

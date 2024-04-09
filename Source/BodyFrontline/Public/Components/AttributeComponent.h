@@ -35,13 +35,13 @@ public:
 	void AddHealth(int32 heal);
 	void IncreaseSoul(int32 Number);
 	void InitOverlay(APlayerController* PlayerController);
+	void UpdateWave();
 
 	FTimerHandle GameTimer;
 
 	UPROPERTY()
 	class UPlayerOverlay* PlayerOverlay;
 
-	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
 	FORCEINLINE void ResetHealth() { Health = MaxHealth; }
 	FORCEINLINE void ResetDeadTimer() { DeadTimer = DEATH_CD; }
