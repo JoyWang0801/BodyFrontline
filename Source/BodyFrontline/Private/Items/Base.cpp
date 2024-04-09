@@ -35,6 +35,8 @@ float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	}
 	if (Health == 0)
 	{
+		UGameplayStatics::SetGamePaused(this, true);
+
 		UGameplayStatics::OpenLevel(this, FName("GameEnd"));
 	}
 

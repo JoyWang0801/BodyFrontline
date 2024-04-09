@@ -72,21 +72,6 @@ void AWhiteBloodCellCharacter::BeginPlay()
 	}
 }
 
-//void AWhiteBloodCellCharacter::InitOverlay()
-//{
-//	ABodyFrontlineHUD* BF_HUD = Cast<ABodyFrontlineHUD>(PlayerController->GetHUD());
-//	if (BF_HUD)
-//	{
-//		PlayerOverlay = BF_HUD->GetSlashOverlay();
-//		if (PlayerOverlay)
-//		{
-//			PlayerOverlay->SetWave(Attributes->GetWaveCount());
-//			PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
-//			PlayerOverlay->SetSouls(Attributes->GetSoulsCount());
-//		}
-//	}
-//}
-
 void AWhiteBloodCellCharacter::Move(const FInputActionValue& value)
 {
 	const FVector2D MovementVector = value.Get<FVector2D>();
@@ -164,6 +149,7 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 
 void AWhiteBloodCellCharacter::GameEnd()
 {
+	UGameplayStatics::SetGamePaused(this, true);
 	UGameplayStatics::OpenLevel(this, FName("GameEnd"));
 }
 
@@ -291,6 +277,12 @@ void AWhiteBloodCellCharacter::RBCDie()
 	if (Attributes) 
 	{
 		Attributes->UpdateRBCCount(-1);
+	}
+
+	if (Attributes->GetRBCCount() == 0)
+	{
+		UGameplayStatics::SetGamePaused(this, true);
+		UGameplayStatics::OpenLevel(this, FName("GameEnd"));
 	}
 }
 

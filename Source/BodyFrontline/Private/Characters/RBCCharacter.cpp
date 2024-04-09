@@ -58,7 +58,7 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 			{
 				HealthBarWidget->SetVisibility(false);
 
-			}, 3, false);
+			}, 6, false);
 	}
 
 	if (Health <= 0)
