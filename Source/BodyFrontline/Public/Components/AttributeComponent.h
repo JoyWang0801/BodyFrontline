@@ -94,5 +94,5 @@ private:
 	AWhiteBloodCellCharacter* Character;
 
 	int32 RBCGenerateSoulCount = 0;
-	int32 RBCGenerateAmount = 5;
+	int32 RBCGenerateAmount = 2;
 };

@@ -150,7 +150,7 @@ void UAttributeComponent::IncreaseSoul(int32 Number)
 			RBCCount++;
 			PlayerOverlay->SetRBCCount(GetRBCCount());
 			RBCGenerateSoulCount = 0;
-			RBCGenerateAmount++;
+			//RBCGenerateAmount++;
 		}
 	}
 
