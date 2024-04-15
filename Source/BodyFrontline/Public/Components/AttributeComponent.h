@@ -36,8 +36,10 @@ public:
 	void IncreaseSoul(int32 Number);
 	void InitOverlay(APlayerController* PlayerController);
 	void UpdateWave();
+	void SetPlayerWin(bool b);
 
 	FTimerHandle GameTimer;
+	class UBodyFrontlineGameInstance* GameInstance;
 
 	UPROPERTY()
 	class UPlayerOverlay* PlayerOverlay;

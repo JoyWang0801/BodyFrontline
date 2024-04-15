@@ -147,8 +147,12 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 	}
 }
 
-void AWhiteBloodCellCharacter::GameEnd()
+void AWhiteBloodCellCharacter::GameEnd(bool GameEndResult)
 {
+	if (Attributes->GameInstance)
+	{
+		Attributes->SetPlayerWin(GameEndResult);
+	}
 	UGameplayStatics::SetGamePaused(this, true);
 	UGameplayStatics::OpenLevel(this, FName("GameEnd"));
 }
@@ -281,8 +285,9 @@ void AWhiteBloodCellCharacter::RBCDie()
 
 	if (Attributes->GetRBCCount() == 0)
 	{
-		UGameplayStatics::SetGamePaused(this, true);
-		UGameplayStatics::OpenLevel(this, FName("GameEnd"));
+		GameEnd(false);
+		/*UGameplayStatics::SetGamePaused(this, true);
+		UGameplayStatics::OpenLevel(this, FName("GameEnd"));*/
 	}
 }
 

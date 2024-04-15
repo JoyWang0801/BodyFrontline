@@ -28,6 +28,7 @@ void ARBCCharacter::BeginPlay()
 		HealthBarWidget->SetVisibility(false);
 	}
 
+	GetMesh()->bRenderCustomDepth = true;
 }
 
 void ARBCCharacter::ReceiveDamage(float Damage)

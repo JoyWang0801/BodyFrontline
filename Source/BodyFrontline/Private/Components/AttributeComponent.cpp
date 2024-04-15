@@ -25,7 +25,7 @@ void UAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UBodyFrontlineGameInstance* GameInstance = Cast<UBodyFrontlineGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance = Cast<UBodyFrontlineGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (GameInstance)
 	{
 		GameDifficulty = GameInstance->Diffculty;
@@ -70,6 +70,12 @@ void UAttributeComponent::UpdateWave()
 	{
 		PlayerOverlay->SetWave(GetWaveCount());
 	}
+}
+
+void UAttributeComponent::SetPlayerWin(bool b)
+{
+	if(GameInstance)
+	{ GameInstance->bPlayerWin = b; }
 }
 
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

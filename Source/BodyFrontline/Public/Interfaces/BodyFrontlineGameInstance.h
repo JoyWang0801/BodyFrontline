@@ -20,4 +20,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	EGameDifficulty Diffculty;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool bPlayerWin;
 };

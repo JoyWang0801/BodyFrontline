@@ -38,7 +38,7 @@ public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	void PlayFireMontage();
 	void UseItem(EItemType item);
-	void GameEnd();
+	void GameEnd(bool GameEndResult);
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls( ASoul* Soul) override;
