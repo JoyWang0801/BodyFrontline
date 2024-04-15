@@ -316,13 +316,18 @@ float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent cons
 
 		if (!Attributes->IsAlive())
 		{
-			WBCState = ECharacterState::ECS_Dead;
-			HealthBarWidget->SetVisibility(false);
-			PlayDeathMaterial();
+			CharacterDie();
 		}
 	}
 
 	return DamageAmount;
+}
+
+void AWhiteBloodCellCharacter::CharacterDie()
+{
+	WBCState = ECharacterState::ECS_Dead;
+	HealthBarWidget->SetVisibility(false);
+	PlayDeathMaterial();
 }
 
 void AWhiteBloodCellCharacter::SetOverlappingItem(AItem* Item)

@@ -48,7 +48,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RBCDie();
-
+	UFUNCTION(BlueprintCallable)
+	void CharacterDie();
 	UFUNCTION(BlueprintCallable)
 	float HealthPercent();
 	UFUNCTION(BlueprintCallable)
