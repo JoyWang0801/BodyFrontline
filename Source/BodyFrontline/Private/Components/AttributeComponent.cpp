@@ -56,7 +56,7 @@ void UAttributeComponent::InitOverlay(APlayerController* PlayerController)
 		if (PlayerOverlay)
 		{
 			PlayerOverlay->SetWave(GetWaveCount());
-			PlayerOverlay->SetTimeCount(GetTimeCountdown());
+			// PlayerOverlay->SetTimeCount(GetTimeCountdown());
 			PlayerOverlay->SetSouls(GetSoulsCount());
 			PlayerOverlay->SetRBCCount(GetRBCCount());
 		}
@@ -120,11 +120,11 @@ void UAttributeComponent::UpdateItemEffectTimer()
 	ItemEffectTimer = FMath::Clamp(ItemEffectTimer - 1, -1.f, ITEM_EFFECT_TIME_LEN);
 }
 
-void UAttributeComponent::UpdateTimer()
-{
-	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);
-	PlayerOverlay->SetTimeCount(GetTimeCountdown());
-}
+//void UAttributeComponent::UpdateTimer()
+//{
+//	TimeCountdown = FMath::Clamp(TimeCountdown - 1, 0.f, 100.f);
+//	PlayerOverlay->SetTimeCount(GetTimeCountdown());
+//}
 
 void UAttributeComponent::UpdateRBCCount(int32 amount)
 {

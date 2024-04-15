@@ -30,7 +30,7 @@ public:
 	bool IsAlive();
 	void UpdateDeadTimer();
 	void UpdateItemEffectTimer();
-	void UpdateTimer();
+	// void UpdateTimer();
 	void UpdateRBCCount(int32 amount);
 	void AddHealth(int32 heal);
 	void IncreaseSoul(int32 Number);

@@ -14,13 +14,13 @@ void UPlayerOverlay::SetSouls(int32 Soul)
 	}
 }
 
-void UPlayerOverlay::SetTimeCount(int32 Time)
-{
-	if (TimeCountdown)
-	{
-		TimeCountdown->SetText(FText::FromString(FString::Printf(TEXT("%d"), Time)));
-	}
-}
+//void UPlayerOverlay::SetTimeCount(int32 Time)
+//{
+//	if (TimeCountdown)
+//	{
+//		TimeCountdown->SetText(FText::FromString(FString::Printf(TEXT("%d"), Time)));
+//	}
+//}
 
 void UPlayerOverlay::SetWave(int32 Wav)
 {

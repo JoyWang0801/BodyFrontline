@@ -119,7 +119,7 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 {
 	if (Attributes && Attributes->PlayerOverlay)
 	{
-		Attributes->UpdateTimer();
+		//Attributes->UpdateTimer();
 		//Attributes->PlayerOverlay->SetTimeCount(Attributes->GetTimeCountdown());
 
 		// TODO - change to ftimehandler
@@ -140,10 +140,10 @@ void AWhiteBloodCellCharacter::UpdateTimerAttribute()
 				Reset();
 			}
 		}
-		if (Attributes->GetTimeCountdown() == 0)
-		{
-			GameEnd();
-		}
+		//if (Attributes->GetTimeCountdown() == 0)
+		//{
+		//	GameEnd();
+		//}
 	}
 }
 
