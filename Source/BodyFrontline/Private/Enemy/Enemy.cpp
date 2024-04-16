@@ -24,6 +24,7 @@ AEnemy::AEnemy()
 	//GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
 	//GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(false);
+	//GetMesh()->GetMaterial(0);
 
 	//UCapsuleComponent* Capsule = GetCapsuleComponent();
 	GetCapsuleComponent()->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
@@ -144,5 +145,33 @@ void AEnemy::DropRandom()
 			ASoul* soul = World->SpawnActor<ASoul>(SoulClass, GetActorTransform());
 		}
 	}
+}
+
+void AEnemy::IncreaseExp(int32 exp)
+{
+	CurrentExp += exp;
+
+	if (CurrentExp > NextLevelCost)
+	{
+		CurrentExp = CurrentExp - NextLevelCost;
+		CurrentLevel++;
+		NextLevelCost++;
+	}
+
+	//if (CurrentLevel == 1 && EnemyMaterial.Num() > 1)
+	//{
+	//	GetMesh()->SetMaterial(0, EnemyMaterial[2]);
+	//	GetMesh()->SetMaterial(2, EnemyMaterial[2]);
+	//}
+	//else if (CurrentLevel == 2 && EnemyMaterial.Num() > 2)
+	//{
+	//	GetMesh()->SetMaterial(0, EnemyMaterial[1]);
+	//	GetMesh()->SetMaterial(2, EnemyMaterial[1]);
+	//}
+	//else if (CurrentLevel == 3 && EnemyMaterial.Num() > 3)
+	//{
+	//	GetMesh()->SetMaterial(0, EnemyMaterial[2]);
+	//	GetMesh()->SetMaterial(2, EnemyMaterial[2]);
+	//}
 }
 

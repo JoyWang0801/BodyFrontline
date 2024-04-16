@@ -36,7 +36,6 @@ float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	if (Health == 0)
 	{
 		UGameplayStatics::SetGamePaused(this, true);
-
 		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 		WBC->GameEnd(false);
 	}
@@ -61,7 +60,7 @@ void ABase::UpdateHealth()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Base health++"));
 
-	// Health = FMath::Clamp(Health + 30.f, 0.f, MaxHealth);
+	//Health = FMath::Clamp(Health + 50.f, 0.f, MaxHealth);
 	UpdateHealthBar();
 }
 

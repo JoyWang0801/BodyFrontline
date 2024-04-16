@@ -22,6 +22,7 @@ public:
 	void Die();
 
 	void DropRandom();
+	void IncreaseExp(int32 exp);
 
 	UPROPERTY(BlueprintReadWrite)
 	EVirusState EnemyState = EVirusState::EVS_Attacking_Base;
@@ -62,4 +63,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
+
+	int32 CurrentExp = 0;
+	int32 CurrentLevel = 0;
+	int32 NextLevelCost = 5;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<class UMaterialInterface*> EnemyMaterial;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<class UMaterialInterface*> EnemyFinalFormMaterial;
 };

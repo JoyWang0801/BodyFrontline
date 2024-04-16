@@ -152,6 +152,7 @@ void AWhiteBloodCellCharacter::GameEnd(bool GameEndResult)
 	if (Attributes->GameInstance)
 	{
 		Attributes->SetPlayerWin(GameEndResult);
+		UE_LOG(LogTemp, Warning, TEXT("Game Instance"));
 	}
 	UGameplayStatics::SetGamePaused(this, true);
 	UGameplayStatics::OpenLevel(this, FName("GameEnd"));

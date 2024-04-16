@@ -31,6 +31,7 @@ void UAttributeComponent::BeginPlay()
 		GameDifficulty = GameInstance->Diffculty;
 	}
 	
+	int32 rbctemp = 0;
 	UWorld* world = GetWorld();
 	if (world)
 	{
@@ -41,9 +42,14 @@ void UAttributeComponent::BeginPlay()
 			if (Actor && Actor->ActorHasTag(FName("Base")))
 			{
 				Base = Cast<ABase>(Actor);
-				break;
+				//break;
+			}
+			if (Actor && Actor->ActorHasTag(FName("RBC")))
+			{
+				rbctemp++;
 			}
 		}
+		RBCCount = rbctemp;
 	}
 }
 

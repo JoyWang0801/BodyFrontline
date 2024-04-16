@@ -21,5 +21,5 @@ public:
 	EGameDifficulty Diffculty;
 
 	UPROPERTY(BlueprintReadWrite)
-	bool bPlayerWin;
+	bool bPlayerWin = false;
 };
