@@ -158,20 +158,33 @@ void AEnemy::IncreaseExp(int32 exp)
 		NextLevelCost++;
 	}
 
-	//if (CurrentLevel == 1 && EnemyMaterial.Num() > 1)
-	//{
-	//	GetMesh()->SetMaterial(0, EnemyMaterial[2]);
-	//	GetMesh()->SetMaterial(2, EnemyMaterial[2]);
-	//}
-	//else if (CurrentLevel == 2 && EnemyMaterial.Num() > 2)
-	//{
-	//	GetMesh()->SetMaterial(0, EnemyMaterial[1]);
-	//	GetMesh()->SetMaterial(2, EnemyMaterial[1]);
-	//}
-	//else if (CurrentLevel == 3 && EnemyMaterial.Num() > 3)
-	//{
-	//	GetMesh()->SetMaterial(0, EnemyMaterial[2]);
-	//	GetMesh()->SetMaterial(2, EnemyMaterial[2]);
-	//}
+	UE_LOG(LogTemp, Warning, TEXT("CurrentLevel: %d."), CurrentLevel);
+	if (CurrentLevel == 1 && EnemyMaterial.Num() > 1)
+	{
+		//GetMesh()->SetMaterial(0, EnemyMaterial[0]);
+		//GetMesh()->SetMaterial(2, EnemyMaterial[0]);
+		GetMesh()->SetMaterial(1, EnemyMaterial[0]);
+	}
+	else if (CurrentLevel == 2 && EnemyMaterial.Num() > 2)
+	{
+		//GetMesh()->SetMaterial(0, EnemyMaterial[1]);
+		//GetMesh()->SetMaterial(2, EnemyMaterial[1]);
+		GetMesh()->SetMaterial(1, EnemyMaterial[1]);
+
+	}
+	else if (CurrentLevel == 3 && EnemyMaterial.Num() > 3)
+	{
+		//GetMesh()->SetMaterial(0, EnemyMaterial[2]);
+		//GetMesh()->SetMaterial(2, EnemyMaterial[2]);
+		GetMesh()->SetMaterial(1, EnemyMaterial[1]);
+
+	}
+	else if (CurrentLevel == 4 && EnemyFinalFormMaterial.Num() > 0)
+	{
+		for (int i = 0; i < EnemyFinalFormMaterial.Num(); i++)
+		{
+			GetMesh()->SetMaterial(i, EnemyFinalFormMaterial[i]);
+		}
+	}
 }
 

@@ -84,6 +84,22 @@ void UAttributeComponent::SetPlayerWin(bool b)
 	{ GameInstance->bPlayerWin = b; }
 }
 
+int32 UAttributeComponent::GetDifficultyInInt()
+{
+	if (GameDifficulty == EGameDifficulty::EGD_Hard)
+	{
+		return 2;
+	}
+	else if (GameDifficulty == EGameDifficulty::EGD_Medium)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -141,7 +157,7 @@ void UAttributeComponent::UpdateItemEffectTimer()
 void UAttributeComponent::UpdateRBCCount(int32 amount)
 {
 	RBCCount = FMath::Clamp(RBCCount + amount, 0, MAX_RBC);
-	PlayerOverlay->SetRBCCount(GetRBCCount());
+	PlayerOverlay->SetRBCCount(RBCCount);
 }
 
 void UAttributeComponent::AddHealth(int32 heal)

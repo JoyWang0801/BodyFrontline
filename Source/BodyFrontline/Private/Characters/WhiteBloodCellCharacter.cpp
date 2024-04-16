@@ -313,6 +313,11 @@ int32 AWhiteBloodCellCharacter::RBCCount()
 void AWhiteBloodCellCharacter::UpdateWaveNumber()
 {
 	Attributes->UpdateWave();
+
+	if (Attributes->GetWaveCount() == 3 + Attributes->GetDifficultyInInt() + 1)
+	{
+		GameEnd(true);
+	}
 }
 
 float AWhiteBloodCellCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

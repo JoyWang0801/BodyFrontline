@@ -9,7 +9,7 @@
 
 #define DEATH_CD 5
 #define ITEM_EFFECT_TIME_LEN 5
-#define MAX_RBC 5
+#define MAX_RBC 50
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BODYFRONTLINE_API UAttributeComponent : public UActorComponent
@@ -37,6 +37,7 @@ public:
 	void InitOverlay(APlayerController* PlayerController);
 	void UpdateWave();
 	void SetPlayerWin(bool b);
+	int32 GetDifficultyInInt();
 
 	FTimerHandle GameTimer;
 	class UBodyFrontlineGameInstance* GameInstance;

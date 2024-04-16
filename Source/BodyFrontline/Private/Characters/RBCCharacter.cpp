@@ -65,12 +65,12 @@ float ARBCCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 
 	if (Health <= 0)
 	{
-		//AEnemy* DmgCauser = Cast<AEnemy>(DamageCauser->GetOwner());
-		//if (DmgCauser)
-		//{
-		//	// UE_LOG(LogTemp, Warning, TEXT("dmg causer: %s."), *DmgCauser->GetName());
-		//	DmgCauser->IncreaseExp(5.f);
-		//}
+		AEnemy* DmgCauser = Cast<AEnemy>(DamageCauser->GetOwner());
+		if (DmgCauser)
+		{
+			// UE_LOG(LogTemp, Warning, TEXT("dmg causer: %s."), *DmgCauser->GetName());
+			DmgCauser->IncreaseExp(5.f);
+		}
 		RBCDie();
 	}
 	return DamageAmount;
