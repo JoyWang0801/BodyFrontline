@@ -45,6 +45,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
 	void PlayDeathMaterial();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+	void GameEndWidget();
 
 	UFUNCTION(BlueprintCallable)
 	void RBCDie();
@@ -123,10 +125,12 @@ private:
 	class UMaterialInterface* WBCMaterial;
 
 	bool DmgIsBoosted = false;
+	bool GameResult = false;
 
 public:
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
-
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetGameResult() const { return GameResult; }
 
 };
