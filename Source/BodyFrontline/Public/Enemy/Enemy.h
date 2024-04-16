@@ -18,18 +18,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
-	void Die();
-
 	void DropRandom();
 	void IncreaseExp(int32 exp);
 	void ReceiveDamage(float Damage);
 	float GetHealthPercent();
 	bool IsAlive();
+	void Die();
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EVirusState EnemyState = EVirusState::EVS_Attacking_Base;
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int32 GetCurrentLevel() { return CurrentLevel; }
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

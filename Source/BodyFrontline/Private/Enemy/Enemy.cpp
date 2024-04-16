@@ -174,6 +174,8 @@ void AEnemy::IncreaseExp(int32 exp)
 	}
 	else if (CurrentLevel == 4 && EnemyFinalFormMaterial.Num() > 0)
 	{
+		MaxHealth += 10.f;
+		Health = MaxHealth;
 		for (int i = 0; i < EnemyFinalFormMaterial.Num(); i++)
 		{
 			GetMesh()->SetMaterial(i, EnemyFinalFormMaterial[i]);
@@ -200,6 +202,11 @@ void AEnemy::LevelUp(int32 level)
 {
 	GetMesh()->SetMaterial(0, EnemyMaterial[level - 1]);
 	GetMesh()->SetMaterial(2, EnemyMaterial[level - 1]);
+
+	// Increase Max HP and recover
+	MaxHealth += 10.f;
+	Health = MaxHealth;
+
 
 }
 

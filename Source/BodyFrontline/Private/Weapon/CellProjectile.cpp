@@ -47,6 +47,7 @@ void ACellProjectile::BeginPlay()
 
 void ACellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Current Dmg: %f."), Damage);
 	if (Hit.GetActor())
 	{
 		// No ally damage
@@ -80,5 +81,10 @@ void ACellProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACellProjectile::SetDamage(int32 dmg)
+{
+	Damage = dmg;
 }
 
