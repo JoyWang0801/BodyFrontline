@@ -4,7 +4,6 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Items/Soul.h"
@@ -35,7 +34,6 @@ AEnemy::AEnemy()
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	//GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 	DeadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("DeadWidget"));
@@ -63,13 +61,13 @@ void AEnemy::Tick(float DeltaTime)
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (Attributes && HealthBarWidget)
+	if (HealthBarWidget)
 	{
-		Attributes->ReceiveDamage(DamageAmount);
-		float CurrentHealthPercent = Attributes->GetHealthPercent();
+		ReceiveDamage(DamageAmount);
+		float CurrentHealthPercent = GetHealthPercent();
 		HealthBarWidget->SetHealthPercent(CurrentHealthPercent);
 
-		if (!Attributes->IsAlive())
+		if (!IsAlive())
 		{
 			Die();
 		}
@@ -161,22 +159,17 @@ void AEnemy::IncreaseExp(int32 exp)
 	UE_LOG(LogTemp, Warning, TEXT("CurrentLevel: %d."), CurrentLevel);
 	if (CurrentLevel == 1 && EnemyMaterial.Num() > 1)
 	{
-		//GetMesh()->SetMaterial(0, EnemyMaterial[0]);
-		//GetMesh()->SetMaterial(2, EnemyMaterial[0]);
-		GetMesh()->SetMaterial(1, EnemyMaterial[0]);
+		LevelUp(1);
+
 	}
 	else if (CurrentLevel == 2 && EnemyMaterial.Num() > 2)
 	{
-		//GetMesh()->SetMaterial(0, EnemyMaterial[1]);
-		//GetMesh()->SetMaterial(2, EnemyMaterial[1]);
-		GetMesh()->SetMaterial(1, EnemyMaterial[1]);
+		LevelUp(2);
 
 	}
 	else if (CurrentLevel == 3 && EnemyMaterial.Num() > 3)
 	{
-		//GetMesh()->SetMaterial(0, EnemyMaterial[2]);
-		//GetMesh()->SetMaterial(2, EnemyMaterial[2]);
-		GetMesh()->SetMaterial(1, EnemyMaterial[1]);
+		LevelUp(3);
 
 	}
 	else if (CurrentLevel == 4 && EnemyFinalFormMaterial.Num() > 0)
@@ -186,5 +179,27 @@ void AEnemy::IncreaseExp(int32 exp)
 			GetMesh()->SetMaterial(i, EnemyFinalFormMaterial[i]);
 		}
 	}
+}
+
+void AEnemy::ReceiveDamage(float Damage)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+}
+
+float AEnemy::GetHealthPercent()
+{
+	return Health / MaxHealth;
+}
+
+bool AEnemy::IsAlive()
+{
+	return Health > 0.f;
+}
+
+void AEnemy::LevelUp(int32 level)
+{
+	GetMesh()->SetMaterial(0, EnemyMaterial[level - 1]);
+	GetMesh()->SetMaterial(2, EnemyMaterial[level - 1]);
+
 }
 

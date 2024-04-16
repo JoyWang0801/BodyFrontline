@@ -23,6 +23,9 @@ public:
 
 	void DropRandom();
 	void IncreaseExp(int32 exp);
+	void ReceiveDamage(float Damage);
+	float GetHealthPercent();
+	bool IsAlive();
 
 	UPROPERTY(BlueprintReadWrite)
 	EVirusState EnemyState = EVirusState::EVS_Attacking_Base;
@@ -38,10 +41,17 @@ protected:
 	float TimeConstant = 5.f;
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	float MaxHealth = 100.f;
+
+	// Current health
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	float Health = 100.f;
+
 	FORCEINLINE float TransformedSin() { return Amplitude * FMath::Sin(RunningTime * TimeConstant); }
 
-	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
+	//UPROPERTY(VisibleAnywhere)
+	//class UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
@@ -73,4 +83,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<class UMaterialInterface*> EnemyFinalFormMaterial;
+
+	void LevelUp(int32 level);
+
 };
