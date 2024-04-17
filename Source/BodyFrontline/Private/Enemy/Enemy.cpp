@@ -11,6 +11,7 @@
 #include "Items/HealPack.h"
 #include "Items/DamageBoost.h"
 #include "Characters/WhiteBloodCellCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -206,7 +207,9 @@ void AEnemy::LevelUp(int32 level)
 	// Increase Max HP and recover
 	MaxHealth += 10.f;
 	Health = MaxHealth;
-
+	float currentSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = currentSpeed + 10.f;
+		
 
 }
 
