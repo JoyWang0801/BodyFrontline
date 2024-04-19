@@ -27,6 +27,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 			if (World) 
 			{
 				World->SpawnActor<AProjectile>(ProjectileClass, SocketTransform.GetLocation(), TargetRotation, SpawnParams);
+				//UE_LOG(LogTemp, Warning, TEXT("instigator: %s owner: %s"), *SpawnParams.Owner->GetName(), *SpawnParams.Instigator->GetName());
 			}
 		}
 	}

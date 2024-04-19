@@ -7,6 +7,10 @@
 #include "Interfaces/GameEnums.h"
 #include "AttributeComponent.generated.h"
 
+#define DEATH_CD 5
+#define ITEM_EFFECT_TIME_LEN 5
+#define MAX_RBC 50
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BODYFRONTLINE_API UAttributeComponent : public UActorComponent
 {
@@ -22,22 +26,44 @@ public:
 	float GetHealthPercent();
 	int32 GetSoulsCount();
 	int32 GetTimeCountdown();		// TODO - Will probably move to AI classes
-	int32 GetWaveCount();			// TODO - Will probably move to AI classes
+	int32 GetWaveCount();			// TODO - Will probably move to AI classes		
 	bool IsAlive();
-	void UpdateTimer();
+	void UpdateDeadTimer();
+	void UpdateItemEffectTimer();
+	// void UpdateTimer();
+	void UpdateRBCCount(int32 amount);
+	void AddHealth(int32 heal);
+	void IncreaseSoul(int32 Number);
+	void InitOverlay(APlayerController* PlayerController);
+	void UpdateWave();
+	void SetPlayerWin(bool b);
+	int32 GetDifficultyInInt();
 
 	FTimerHandle GameTimer;
+	class UBodyFrontlineGameInstance* GameInstance;
 
-	FORCEINLINE void IncreaseSoul(int32 Number) { SoulsCount += Number; }
-	FORCEINLINE void UpdateWave(int32 Wav) { WaveCount = Wav; }
+	UPROPERTY()
+	class UPlayerOverlay* PlayerOverlay;
+
 	FORCEINLINE void SetDifficulty(EGameDifficulty diff) { GameDifficulty = diff; }
+	FORCEINLINE void ResetHealth() { Health = MaxHealth; }
+	FORCEINLINE void ResetDeadTimer() { DeadTimer = DEATH_CD; }
+	FORCEINLINE int32 GetDeadTimer() const { return DeadTimer; }
+	FORCEINLINE int32 GetRBCCount () const { return RBCCount; }
+	FORCEINLINE void ResetItemEffectTimer() { ItemEffectTimer = DEATH_CD; }
+	FORCEINLINE int32 GetItemEffectTimer() const { return ItemEffectTimer; }
+	FORCEINLINE void SetCharacter(class AWhiteBloodCellCharacter* c) { Character = c; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE EGameDifficulty GetDifficulty() const { return GameDifficulty; }
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+
 private:	
-	
+
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	float MaxHealth = 100.f;
 
@@ -46,14 +72,30 @@ private:
 	float Health = 100.f;
 
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
-	int32 SoulsCount = 0;
+	int32 TotalSoulsCount = 0;
 
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	int32 TimeCountdown = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	int32 WaveCount = 0;
+	
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	int32 RBCCount = 2;
 		
 	UPROPERTY(EditAnywhere, Category = "Actor stats")
 	EGameDifficulty GameDifficulty = EGameDifficulty::EGD_Easy;
+
+	int32 DeadTimer = DEATH_CD;
+	int32 ItemEffectTimer = ITEM_EFFECT_TIME_LEN;
+
+	class ABase* Base;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ARBCCharacter> RBCClass;
+
+	AWhiteBloodCellCharacter* Character;
+
+	int32 RBCGenerateSoulCount = 0;
+	int32 RBCGenerateAmount = 2;
 };

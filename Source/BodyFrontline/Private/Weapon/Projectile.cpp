@@ -47,29 +47,41 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (ImpactParticles) 
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
-	}
-	if (ImpactSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-	}
-
+	//UE_LOG(LogTemp, Warning, TEXT("%s."), *Hit.GetActor()->GetName());
 	if (Hit.GetActor()) 
 	{
 		// No ally damage
 		bool HittingRBC = Hit.GetActor()->ActorHasTag(FName("RBC"));
 		bool FromWBC = GetOwner()->ActorHasTag(FName("WBC"));
-		if (!(HittingRBC && FromWBC))
+		if (!(HittingRBC && FromWBC) && !(Hit.GetActor() == GetInstigator()))
 		{
+			if (ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+			}
+			if (ImpactSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+			}
+
+			AWhiteBloodCellCharacter* Character = Cast<AWhiteBloodCellCharacter>(GetOwner());
+			if (Character->IsDmgBoostUp())
+			{
+				CurrentDamage = CurrentDamage * 1.25;
+			}
+			else 
+			{
+				CurrentDamage = BaseDamage;
+			}
+
 			UGameplayStatics::ApplyDamage(
 				Hit.GetActor(),
-				Damage,
+				CurrentDamage,
 				GetInstigator()->GetController(),
 				this,
 				UDamageType::StaticClass()
 			);
+
 		}
 	}
 

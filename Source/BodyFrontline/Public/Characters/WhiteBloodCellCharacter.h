@@ -37,20 +37,35 @@ public:
 	virtual void PostInitializeComponents() override;
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	void PlayFireMontage();
+	void UseItem(EItemType item);
+	void GameEnd(bool GameEndResult);
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls( ASoul* Soul) override;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
 	void PlayDeathMaterial();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+	void GameEndWidget();
 
-	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	UFUNCTION(BlueprintCallable)
+	void RBCDie();
+	UFUNCTION(BlueprintCallable)
+	void CharacterDie();
+	UFUNCTION(BlueprintCallable)
+	float HealthPercent();
+	UFUNCTION(BlueprintCallable)
+	int32 WaveNumber();
+	UFUNCTION(BlueprintCallable)
+	int32 RBCCount();
+	UFUNCTION(BlueprintCallable)
+	void UpdateWaveNumber();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void InitOverlay();
+	//void InitOverlay();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* WhiteBloodCellMappingContext;
@@ -67,13 +82,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<APlayerCamera> CameraClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ECharacterState WBCState = ECharacterState::ECS_Alive;
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
 	void Move(const FInputActionValue& value);
+	void CharacterJump(const FInputActionValue& value);
 	void EPressed();
 	void FireButton(const FInputActionValue& value);
 
@@ -82,9 +98,13 @@ protected:
 	float AO_Pitch;
 private:
 	void UpdateTimerAttribute();
+	void Reset();
 
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
+
+	UPROPERTY(VisibleAnywhere)
+	class UAttributeComponent* Attributes;
 
 	const APlayerCameraManager* PlayerCameraManager;
 	APlayerController* PlayerController;
@@ -93,14 +113,24 @@ private:
 	class UAnimMontage* FireWeaponMontage;
 
 	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
-
-	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 
-	UPROPERTY()
-	UPlayerOverlay* PlayerOverlay;
+	//UPROPERTY()
+	//UPlayerOverlay* PlayerOverlay;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* WBCMaterial;
+
+	bool DmgIsBoosted = false;
+	bool GameResult = false;
+
+public:
+	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	FORCEINLINE bool IsDmgBoostUp() const { return DmgIsBoosted; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetGameResult() const { return GameResult; }
+
 };

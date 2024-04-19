@@ -5,10 +5,15 @@
 #include "Characters/RBCCharacter.h"
 #include "Items/Soul.h"
 #include "Characters/WhiteBloodCellCharacter.h"
+#include "HUD/HealthBarComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ABase::ABase()
 {
+	Tags.Add(FName("Base"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
+	HealthBarWidget->SetHealthPercent(.3f);
 }
 
 void ABase::Tick(float DeltaTime)
@@ -19,15 +24,20 @@ void ABase::Tick(float DeltaTime)
 	SetActorRotation(FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw + 0.25, CurrentRotation.Roll));
 }
 
-<<<<<<< Updated upstream
-=======
 float ABase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (EventInstigator->GetPawn()->ActorHasTag(FName("Enemy")))
+	 UE_LOG(LogTemp, Warning, TEXT("%s."), *DamageCauser->GetInstigator()->GetName());
+	if (DamageCauser->GetInstigator()->ActorHasTag(FName("Enemy")))
 	{
 		Health = FMath::Clamp(Health - DamageAmount, 0.f, MaxHealth);
-		// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
+	//	// UE_LOG(LogTemp, Warning, TEXT("Base health: %f."), GetHealthPercent());
 		UpdateHealthBar();
+	}
+	if (Health == 0)
+	{
+		UGameplayStatics::SetGamePaused(this, true);
+		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+		WBC->GameEnd(false);
 	}
 
 	return 0.0f;
@@ -42,7 +52,7 @@ void ABase::UpdateHealthBar()
 	if (Health == MaxHealth) 
 	{
 		AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-		WBC->GameEnd();
+		WBC->GameEnd(true);
 	}
 }
 
@@ -50,31 +60,41 @@ void ABase::UpdateHealth()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Base health++"));
 
-	//Health = FMath::Clamp(Health + 1.f, 0.f, MaxHealth);
+	// Health = FMath::Clamp(Health + 50.f, 0.f, MaxHealth);
 	UpdateHealthBar();
 }
 
->>>>>>> Stashed changes
 void ABase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s overlap."), *OverlappedComponent->GetName());
-
-
-	ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
-	if (RBC)
+	if (OtherActor->ActorHasTag(FName("RBC")))
 	{
-		//RBC->SetInBaseArea(true);
-		ASoul* Holding = RBC->GetHoldingSoul();
-		if(Holding)
+		ARBCCharacter* RBC = Cast<ARBCCharacter>(OtherActor);
+		if (RBC && RBC->GetIsHoldingSoul())
 		{
-			Holding->DisableSphereCollision();
-			AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-			WBC->AddSouls(Holding);
-			//DisableSphereCollision();
-			SpawnPickupSystem();
-			SpawnPickupSound();
+			ASoul* Holding = RBC->GetHoldingSoul();
+			if (Holding)
+			{
+				Holding->DisableSphereCollision();
+				AWhiteBloodCellCharacter* WBC = Cast<AWhiteBloodCellCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+				WBC->AddSouls(Holding);
+				SpawnPickupSystem();
+				SpawnPickupSound();
 
-			Holding->Destroy();
+				Health += OXYGEN_WEIGHT;
+				RBC->DeliverSoul();
+			}
 		}
 	}
+}
+
+void ABase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetWorldTimerManager().SetTimer(HealthTimer, this, &ABase::UpdateHealth, 1.0f, true);
+}
+
+float ABase::GetHealthPercent()
+{
+	return Health / MaxHealth;
 }

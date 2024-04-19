@@ -18,22 +18,40 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	void DropRandom();
+	void IncreaseExp(int32 exp);
+	void ReceiveDamage(float Damage);
+	float GetHealthPercent();
+	bool IsAlive();
+	void Die();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EVirusState EnemyState = EVirusState::EVS_Attacking_Base;
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int32 GetCurrentLevel() { return CurrentLevel; }
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-	float Amplitude = 1.25f;
+	float Amplitude = 2.35f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
 	float TimeConstant = 5.f;
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	float MaxHealth = 100.f;
+
+	// Current health
+	UPROPERTY(EditAnywhere, Category = "Actor stats")
+	float Health = 100.f;
+
 	FORCEINLINE float TransformedSin() { return Amplitude * FMath::Sin(RunningTime * TimeConstant); }
 
-	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
+	//UPROPERTY(VisibleAnywhere)
+	//class UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
@@ -50,6 +68,22 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ASoul> SoulClass;
 
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<class AItem>> ItemClasses;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
+
+	int32 CurrentExp = 0;
+	int32 CurrentLevel = 0;
+	int32 NextLevelCost = 5;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<class UMaterialInterface*> EnemyMaterial;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<class UMaterialInterface*> EnemyFinalFormMaterial;
+
+	void LevelUp(int32 level);
+
 };

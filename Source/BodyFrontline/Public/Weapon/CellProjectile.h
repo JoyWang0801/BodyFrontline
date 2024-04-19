@@ -15,6 +15,11 @@ public:
 	ACellProjectile();
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
+	void SetDamage(int32 dmg);
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int32 GetDamage() { return Damage; }
+
 protected:
 	virtual void BeginPlay() override;
 
